@@ -1,0 +1,10 @@
+# build output (make)
+*.o
+*.ko
+*.mod
+*.mod.c
+*.dtbo
+.*.cmd
+Module.symvers
+modules.order
+.tmp_versions/

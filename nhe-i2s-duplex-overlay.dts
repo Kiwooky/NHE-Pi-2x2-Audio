@@ -1,0 +1,71 @@
+// SPDX-License-Identifier: GPL-2.0
+// nhe-i2s-duplex: stereo in and out on the Pi's I2S pins, with the clocks
+// coming from the audio board (a PCM1808 ADC as clock master, a PCM5102A DAC
+// on the same BCK / LRCK). The Pi only receives the clocks.
+//
+//   GPIO 18 (pin 12)  BCK   in  from the ADC, also to the DAC
+//   GPIO 19 (pin 35)  LRCK  in  from the ADC, also to the DAC
+//   GPIO 20 (pin 38)  DIN   in  from the ADC's DATA
+//   GPIO 21 (pin 40)  DOUT  out to the DAC's DIN
+//
+// Needs the nhe-i2s-codec module (nhe-i2s-codec.c). Pi 5 (RP1) and the
+// older Pis (BCM2835 I2S) alike: i2s_clk_consumer names the right block on
+// each. Based on the kernel's i2s-master-dac overlay.
+//
+//   /boot/firmware/config.txt:  dtoverlay=nhe-i2s-duplex
+//   optional:                   dtoverlay=nhe-i2s-duplex,card-name=NHE
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <&i2s_clk_consumer>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+		__overlay__ {
+			nhe_codec: nhe-i2s-codec {
+				compatible = "nhe,i2s-codec";
+				#sound-dai-cells = <0>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <&sound>;
+		sound_overlay: __overlay__ {
+			compatible = "simple-audio-card";
+			i2s-controller = <&i2s_clk_consumer>;
+			status = "okay";
+
+			simple-audio-card,name = "nhe-duplex";
+			simple-audio-card,format = "i2s";
+
+			// the audio board makes the clocks
+			simple-audio-card,bitclock-master = <&dailink_codec>;
+			simple-audio-card,frame-master = <&dailink_codec>;
+
+			simple-audio-card,cpu {
+				sound-dai = <&i2s_clk_consumer>;
+				// 2 x 32-bit slots: BCK = 64 fs, as the PCM1808 sends it
+				dai-tdm-slot-num = <2>;
+				dai-tdm-slot-width = <32>;
+			};
+
+			dailink_codec: simple-audio-card,codec {
+				sound-dai = <&nhe_codec>;
+			};
+		};
+	};
+
+	__overrides__ {
+		card-name = <&sound_overlay>,"simple-audio-card,name";
+	};
+};
