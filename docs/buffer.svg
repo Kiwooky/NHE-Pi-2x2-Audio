@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 1200" width="1280" height="1200" font-family="Helvetica, Arial, sans-serif">
-<rect width="1280" height="1200" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 1290" width="1280" height="1290" font-family="Helvetica, Arial, sans-serif">
+<rect width="1280" height="1290" fill="#ffffff"/>
 <text x="40" y="48" font-size="26" text-anchor="start" fill="#212121" font-weight="700">NHE Pi 2x2 Audio: buffer board (one TL074)</text>
-<text x="40" y="76" font-size="15" text-anchor="start" fill="#575757" font-weight="400">High-impedance instrument inputs in front of the PCM1808, and a pad + buffer after the PCM5102. Single 12–18 V supply; VB is half of it.</text>
+<text x="40" y="76" font-size="15" text-anchor="start" fill="#575757" font-weight="400">High-impedance instrument inputs in front of the PCM1808, and a pad + buffer after the PCM5102. Runs on ±12 V made from the Pi’s 5 V.</text>
 <rect x="20" y="96" width="1240" height="2" fill="#e4e4e8"/>
 <text x="40" y="128" font-size="19" text-anchor="start" fill="#212121" font-weight="700">Input  × 2</text>
 <text x="40" y="150" font-size="13" text-anchor="start" fill="#7b7b7b" font-weight="400">TL074 A: input L (pins 1–3)  ·  TL074 B: input R (pins 5–7)  ·  guitar → this → ADC board L / R</text>
@@ -35,23 +35,26 @@
 <polyline points="380,322 380,334 373,337.3333333333333 387,344.0 373,350.6666666666667 387,357.3333333333333 373,364.0 387,370.6666666666667 380,374 380,386" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <text x="394" y="358.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">R3a  1M</text>
 <polyline points="380,386 380,394" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<rect x="363" y="394" width="34" height="18" rx="4" fill="#fff" stroke="#883996" stroke-width="2"/>
-<text x="380" y="407" font-size="11" text-anchor="middle" fill="#883996" font-weight="700">VB</text>
+<line x1="366" y1="394" x2="394" y2="394" stroke="#212121" stroke-width="2"/>
+<line x1="371" y1="399" x2="389" y2="399" stroke="#212121" stroke-width="2"/>
+<line x1="376" y1="404" x2="384" y2="404" stroke="#212121" stroke-width="2"/>
 <circle cx="456" cy="304" r="4" fill="#fff" stroke="#212121" stroke-width="2"/>
 <polyline points="456,308 456,322" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <polyline points="456,322 456,334 449,337.3333333333333 463,344.0 449,350.6666666666667 463,357.3333333333333 449,364.0 463,370.6666666666667 456,374 456,386" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <text x="470" y="358.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">R3b  2.2M</text>
 <polyline points="456,386 456,394" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<rect x="439" y="394" width="34" height="18" rx="4" fill="#fff" stroke="#883996" stroke-width="2"/>
-<text x="456" y="407" font-size="11" text-anchor="middle" fill="#883996" font-weight="700">VB</text>
+<line x1="442" y1="394" x2="470" y2="394" stroke="#212121" stroke-width="2"/>
+<line x1="447" y1="399" x2="465" y2="399" stroke="#212121" stroke-width="2"/>
+<line x1="452" y1="404" x2="460" y2="404" stroke="#212121" stroke-width="2"/>
 <circle cx="532" cy="304" r="4" fill="#fff" stroke="#212121" stroke-width="2"/>
 <polyline points="532,308 532,322" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <polyline points="532,322 532,334 525,337.3333333333333 539,344.0 525,350.6666666666667 539,357.3333333333333 525,364.0 539,370.6666666666667 532,374 532,386" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <text x="546" y="358.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">R3c  4.7M</text>
 <polyline points="532,386 532,394" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<rect x="515" y="394" width="34" height="18" rx="4" fill="#fff" stroke="#883996" stroke-width="2"/>
-<text x="532" y="407" font-size="11" text-anchor="middle" fill="#883996" font-weight="700">VB</text>
-<text x="456" y="286" font-size="12" text-anchor="middle" fill="#883996" font-weight="700">S1  input Z (SP3T or rotary)</text>
+<line x1="518" y1="394" x2="546" y2="394" stroke="#212121" stroke-width="2"/>
+<line x1="523" y1="399" x2="541" y2="399" stroke="#212121" stroke-width="2"/>
+<line x1="528" y1="404" x2="536" y2="404" stroke="#212121" stroke-width="2"/>
+<text x="456" y="286" font-size="12" text-anchor="middle" fill="#883996" font-weight="700">S1  input Z (SP3T or rotary), to GND</text>
 <polyline points="340,236 700,236" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <polygon points="700,206 700,306 800,256" fill="#fff" stroke="#212121" stroke-width="2.5"/>
 <text x="710" y="241" font-size="16" text-anchor="start" fill="#212121" font-weight="700">+</text>
@@ -78,9 +81,8 @@
 <polyline points="670,410 670,428" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <polyline points="670,436 670,454" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <line x1="658" y1="428" x2="682" y2="428" stroke="#212121" stroke-width="2.5"/>
-<path d="M658,440 Q670,435 682,440" fill="none" stroke="#212121" stroke-width="2.5"/>
-<text x="654" y="426" font-size="12" text-anchor="middle" fill="#212121" font-weight="700">+</text>
-<text x="654" y="436.0" font-size="12" text-anchor="end" fill="#212121" font-weight="400">C2  22µ</text>
+<line x1="658" y1="436" x2="682" y2="436" stroke="#212121" stroke-width="2.5"/>
+<text x="654" y="436.0" font-size="12" text-anchor="end" fill="#212121" font-weight="400">C2  22µ NP</text>
 <polyline points="670,454 670,462" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <circle cx="670" cy="466" r="4" fill="#fff" stroke="#212121" stroke-width="2"/>
 <line x1="670" y1="470" x2="692" y2="490" stroke="#212121" stroke-width="2.5"/>
@@ -94,9 +96,8 @@
 <polyline points="900,256 918,256" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <polyline points="926,256 944,256" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <line x1="918" y1="244" x2="918" y2="268" stroke="#212121" stroke-width="2.5"/>
-<path d="M930,244 Q925,256 930,268" fill="none" stroke="#212121" stroke-width="2.5"/>
-<text x="910" y="247" font-size="12" text-anchor="middle" fill="#212121" font-weight="700">+</text>
-<text x="922.0" y="238" font-size="12" text-anchor="middle" fill="#212121" font-weight="400">C3  10µ</text>
+<line x1="926" y1="244" x2="926" y2="268" stroke="#212121" stroke-width="2.5"/>
+<text x="922.0" y="238" font-size="12" text-anchor="middle" fill="#212121" font-weight="400">C3  10µ NP</text>
 <polyline points="944,256 970,256" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <polyline points="970,256 982,256 985.3333333333334,249 992.0,263 998.6666666666666,249 1005.3333333333334,263 1012.0,249 1018.6666666666666,263 1022,256 1034,256" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <text x="1002.0" y="242" font-size="12" text-anchor="middle" fill="#212121" font-weight="400">R6  100R</text>
@@ -151,8 +152,9 @@
 <polyline points="470,736 470,748 463,751.3333333333334 477,758.0 463,764.6666666666666 477,771.3333333333334 463,778.0 477,784.6666666666666 470,788 470,800" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <text x="484" y="772.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">R10  1M</text>
 <polyline points="470,800 470,808" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<rect x="453" y="808" width="34" height="18" rx="4" fill="#fff" stroke="#883996" stroke-width="2"/>
-<text x="470" y="821" font-size="11" text-anchor="middle" fill="#883996" font-weight="700">VB</text>
+<line x1="456" y1="808" x2="484" y2="808" stroke="#212121" stroke-width="2"/>
+<line x1="461" y1="813" x2="479" y2="813" stroke="#212121" stroke-width="2"/>
+<line x1="466" y1="818" x2="474" y2="818" stroke="#212121" stroke-width="2"/>
 <polyline points="470,736 700,736" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <polygon points="700,706 700,806 800,756" fill="#fff" stroke="#212121" stroke-width="2.5"/>
 <text x="710" y="741" font-size="16" text-anchor="start" fill="#212121" font-weight="700">+</text>
@@ -166,9 +168,8 @@
 <polyline points="900,756 918,756" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <polyline points="926,756 944,756" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <line x1="918" y1="744" x2="918" y2="768" stroke="#212121" stroke-width="2.5"/>
-<path d="M930,744 Q925,756 930,768" fill="none" stroke="#212121" stroke-width="2.5"/>
-<text x="910" y="747" font-size="12" text-anchor="middle" fill="#212121" font-weight="700">+</text>
-<text x="922.0" y="738" font-size="12" text-anchor="middle" fill="#212121" font-weight="400">C5  10µ</text>
+<line x1="926" y1="744" x2="926" y2="768" stroke="#212121" stroke-width="2.5"/>
+<text x="922.0" y="738" font-size="12" text-anchor="middle" fill="#212121" font-weight="400">C5  10µ NP</text>
 <polyline points="944,756 970,756" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <polyline points="970,756 982,756 985.3333333333334,749 992.0,763 998.6666666666666,749 1005.3333333333334,763 1012.0,749 1018.6666666666666,763 1022,756 1034,756" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
 <text x="1002.0" y="742" font-size="12" text-anchor="middle" fill="#212121" font-weight="400">R11  100R</text>
@@ -186,83 +187,91 @@
 <text x="1165" y="761" font-size="13" text-anchor="start" fill="#212121" font-weight="700">OUT L / R</text>
 <text x="1185" y="786" font-size="11" text-anchor="middle" fill="#7b7b7b" font-weight="400">(¼&quot; jacks)</text>
 <rect x="20" y="920" width="1240" height="2" fill="#e4e4e8"/>
-<text x="40" y="952" font-size="19" text-anchor="start" fill="#212121" font-weight="700">Power and bias</text>
-<text x="40" y="974" font-size="13" text-anchor="start" fill="#7b7b7b" font-weight="400">One supply for all four channels. Separate adapter from the Pi’s; grounds joined at one point (the ADC board’s GND).</text>
-<circle cx="70" cy="1040" r="9" fill="#fff" stroke="#212121" stroke-width="2.5"/>
-<circle cx="70" cy="1040" r="2.5" fill="#212121"/>
-<text x="70" y="1068" font-size="13" text-anchor="middle" fill="#212121" font-weight="700">12–18 V DC</text>
-<text x="70" y="1084" font-size="11" text-anchor="middle" fill="#7b7b7b" font-weight="400">(centre −)</text>
-<polyline points="79,1040 110,1040" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="122,1030 122,1050 140,1040" fill="#212121"/>
-<line x1="141" y1="1030" x2="141" y2="1050" stroke="#212121" stroke-width="2.5"/>
-<polyline points="110,1040 122,1040" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<polyline points="141,1040 200,1040" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<text x="131" y="1022" font-size="12" text-anchor="middle" fill="#212121" font-weight="400">D1  1N5817</text>
-<circle cx="200" cy="1040" r="4" fill="#212121"/>
-<polyline points="200,1040 200,1058" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<polyline points="200,1066 200,1084" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<line x1="188" y1="1058" x2="212" y2="1058" stroke="#212121" stroke-width="2.5"/>
-<path d="M188,1070 Q200,1065 212,1070" fill="none" stroke="#212121" stroke-width="2.5"/>
-<text x="184" y="1056" font-size="12" text-anchor="middle" fill="#212121" font-weight="700">+</text>
-<text x="216" y="1066.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">C6  100µ</text>
-<polyline points="200,1084 200,1092" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<line x1="186" y1="1092" x2="214" y2="1092" stroke="#212121" stroke-width="2"/>
-<line x1="191" y1="1097" x2="209" y2="1097" stroke="#212121" stroke-width="2"/>
-<line x1="196" y1="1102" x2="204" y2="1102" stroke="#212121" stroke-width="2"/>
-<polyline points="200,1040 300,1040" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<circle cx="300" cy="1040" r="4" fill="#212121"/>
-<polyline points="300,1040 300,1058" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<polyline points="300,1066 300,1084" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<line x1="288" y1="1058" x2="312" y2="1058" stroke="#212121" stroke-width="2.5"/>
-<line x1="288" y1="1066" x2="312" y2="1066" stroke="#212121" stroke-width="2.5"/>
-<text x="316" y="1066.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">C7  100n</text>
-<polyline points="300,1084 300,1092" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<line x1="286" y1="1092" x2="314" y2="1092" stroke="#212121" stroke-width="2"/>
-<line x1="291" y1="1097" x2="309" y2="1097" stroke="#212121" stroke-width="2"/>
-<line x1="296" y1="1102" x2="304" y2="1102" stroke="#212121" stroke-width="2"/>
-<polyline points="300,1040 420,1040" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<circle cx="420" cy="1040" r="4" fill="#212121"/>
-<text x="420" y="1024" font-size="12" text-anchor="middle" fill="#c0392b" font-weight="700">+V  → TL074 pin 4</text>
-<polyline points="420,1040 420,1052 413,1055.3333333333333 427,1062.0 413,1068.6666666666667 427,1075.3333333333333 413,1082.0 427,1088.6666666666667 420,1092 420,1104" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<text x="434" y="1076.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">R13  10k</text>
-<circle cx="420" cy="1104" r="4" fill="#212121"/>
-<polyline points="420,1104 420,1116 413,1119.3333333333333 427,1126.0 413,1132.6666666666667 427,1139.3333333333333 413,1146.0 427,1152.6666666666667 420,1156 420,1168" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<text x="434" y="1140.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">R14  10k</text>
-<polyline points="420,1168 420,1176" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<line x1="406" y1="1176" x2="434" y2="1176" stroke="#212121" stroke-width="2"/>
-<line x1="411" y1="1181" x2="429" y2="1181" stroke="#212121" stroke-width="2"/>
-<line x1="416" y1="1186" x2="424" y2="1186" stroke="#212121" stroke-width="2"/>
-<polyline points="420,1104 520,1104" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<circle cx="520" cy="1104" r="4" fill="#212121"/>
-<polyline points="520,1104 520,1122" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<polyline points="520,1130 520,1148" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<line x1="508" y1="1122" x2="532" y2="1122" stroke="#212121" stroke-width="2.5"/>
-<path d="M508,1134 Q520,1129 532,1134" fill="none" stroke="#212121" stroke-width="2.5"/>
-<text x="504" y="1120" font-size="12" text-anchor="middle" fill="#212121" font-weight="700">+</text>
-<text x="536" y="1130.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">C8  47µ</text>
-<polyline points="520,1148 520,1156" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<line x1="506" y1="1156" x2="534" y2="1156" stroke="#212121" stroke-width="2"/>
-<line x1="511" y1="1161" x2="529" y2="1161" stroke="#212121" stroke-width="2"/>
-<line x1="516" y1="1166" x2="524" y2="1166" stroke="#212121" stroke-width="2"/>
-<polyline points="520,1104 600,1104" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<polyline points="600,1104 600,1112" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
-<rect x="583" y="1112" width="34" height="18" rx="4" fill="#fff" stroke="#883996" stroke-width="2"/>
-<text x="600" y="1125" font-size="11" text-anchor="middle" fill="#883996" font-weight="700">VB</text>
-<text x="632" y="1130" font-size="12" text-anchor="start" fill="#883996" font-weight="700">= VB (half the supply)</text>
-<text x="420" y="1230" font-size="12" text-anchor="start" fill="#212121" font-weight="400">TL074 pin 11 → GND.  100n from pin 4 to pin 11, right at the chip.</text>
+<text x="40" y="952" font-size="19" text-anchor="start" fill="#212121" font-weight="700">Power: ±12 V from the Pi’s 5 V</text>
+<text x="40" y="974" font-size="13" text-anchor="start" fill="#7b7b7b" font-weight="400">One supply for the whole unit: the Pi’s USB-C charger. An isolated DC-DC module makes ±12 V; its 0 V joins audio GND.</text>
+<rect x="40" y="1028" width="96" height="44" rx="6" fill="#fff" stroke="#212121" stroke-width="2"/>
+<text x="88" y="1047" font-size="12" text-anchor="middle" fill="#212121" font-weight="700">Pi header</text>
+<text x="88" y="1063" font-size="11" text-anchor="middle" fill="#7b7b7b" font-weight="400">5 V pin 4</text>
+<polyline points="136,1050 200,1050" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="200" cy="1050" r="4" fill="#212121"/>
+<polyline points="200,1050 200,1068" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="200,1076 200,1094" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<line x1="188" y1="1068" x2="212" y2="1068" stroke="#212121" stroke-width="2.5"/>
+<path d="M188,1080 Q200,1075 212,1080" fill="none" stroke="#212121" stroke-width="2.5"/>
+<text x="184" y="1066" font-size="12" text-anchor="middle" fill="#212121" font-weight="700">+</text>
+<text x="184" y="1076.0" font-size="12" text-anchor="end" fill="#212121" font-weight="400">C10  10µ</text>
+<polyline points="200,1094 200,1102" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<line x1="186" y1="1102" x2="214" y2="1102" stroke="#212121" stroke-width="2"/>
+<line x1="191" y1="1107" x2="209" y2="1107" stroke="#212121" stroke-width="2"/>
+<line x1="196" y1="1112" x2="204" y2="1112" stroke="#212121" stroke-width="2"/>
+<polyline points="200,1050 260,1050" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<rect x="260" y="1010" width="150" height="150" rx="8" fill="#f4eef6" stroke="#883996" stroke-width="2.5"/>
+<text x="335" y="1074" font-size="13" text-anchor="middle" fill="#883996" font-weight="700">U2</text>
+<text x="335" y="1092" font-size="12" text-anchor="middle" fill="#883996" font-weight="700">B0512S-1W</text>
+<text x="335" y="1108" font-size="10" text-anchor="middle" fill="#7b7b7b" font-weight="400">5 V → ±12 V, isolated</text>
+<text x="268" y="1054" font-size="11" text-anchor="start" fill="#212121" font-weight="400">Vin</text>
+<text x="268" y="1154" font-size="11" text-anchor="start" fill="#212121" font-weight="400">GND</text>
+<polyline points="260,1150 230,1150" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="230,1150 230,1158" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<line x1="216" y1="1158" x2="244" y2="1158" stroke="#212121" stroke-width="2"/>
+<line x1="221" y1="1163" x2="239" y2="1163" stroke="#212121" stroke-width="2"/>
+<line x1="226" y1="1168" x2="234" y2="1168" stroke="#212121" stroke-width="2"/>
+<text x="402" y="1054" font-size="11" text-anchor="end" fill="#212121" font-weight="400">+Vo</text>
+<text x="402" y="1104" font-size="11" text-anchor="end" fill="#212121" font-weight="400">0V</text>
+<text x="402" y="1154" font-size="11" text-anchor="end" fill="#212121" font-weight="400">−Vo</text>
+<polyline points="410,1050 440,1050" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="440,1050 452,1050 455.3333333333333,1043 462.0,1057 468.6666666666667,1043 475.3333333333333,1057 482.0,1043 488.6666666666667,1057 492,1050 504,1050" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<text x="472.0" y="1036" font-size="12" text-anchor="middle" fill="#212121" font-weight="400">R13  10R</text>
+<polyline points="504,1050 560,1050" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="560" cy="1050" r="4" fill="#212121"/>
+<polyline points="560,1050 560,1068" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="560,1076 560,1094" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<line x1="548" y1="1068" x2="572" y2="1068" stroke="#212121" stroke-width="2.5"/>
+<path d="M548,1080 Q560,1075 572,1080" fill="none" stroke="#212121" stroke-width="2.5"/>
+<text x="544" y="1066" font-size="12" text-anchor="middle" fill="#212121" font-weight="700">+</text>
+<text x="576" y="1076.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">C6  100µ</text>
+<polyline points="560,1094 560,1102" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<line x1="546" y1="1102" x2="574" y2="1102" stroke="#212121" stroke-width="2"/>
+<line x1="551" y1="1107" x2="569" y2="1107" stroke="#212121" stroke-width="2"/>
+<line x1="556" y1="1112" x2="564" y2="1112" stroke="#212121" stroke-width="2"/>
+<polyline points="560,1050 640,1050" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<text x="650" y="1055" font-size="12" text-anchor="start" fill="#c0392b" font-weight="700">+12 V → TL074 pin 4</text>
+<polyline points="410,1100 440,1100" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="440,1100 440,1108" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<line x1="426" y1="1108" x2="454" y2="1108" stroke="#212121" stroke-width="2"/>
+<line x1="431" y1="1113" x2="449" y2="1113" stroke="#212121" stroke-width="2"/>
+<line x1="436" y1="1118" x2="444" y2="1118" stroke="#212121" stroke-width="2"/>
+<text x="600" y="1106" font-size="11" text-anchor="start" fill="#7b7b7b" font-weight="400">audio GND (one point)</text>
+<polyline points="410,1150 440,1150" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="440,1150 452,1150 455.3333333333333,1143 462.0,1157 468.6666666666667,1143 475.3333333333333,1157 482.0,1143 488.6666666666667,1157 492,1150 504,1150" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<text x="472.0" y="1136" font-size="12" text-anchor="middle" fill="#212121" font-weight="400">R14  10R</text>
+<polyline points="504,1150 560,1150" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="560" cy="1150" r="4" fill="#212121"/>
+<polyline points="560,1150 560,1168" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="560,1176 560,1194" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<line x1="548" y1="1168" x2="572" y2="1168" stroke="#212121" stroke-width="2.5"/>
+<line x1="548" y1="1176" x2="572" y2="1176" stroke="#212121" stroke-width="2.5"/>
+<text x="576" y="1176.0" font-size="12" text-anchor="start" fill="#212121" font-weight="400">C8  100µ, + side to GND</text>
+<polyline points="560,1194 560,1202" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<line x1="546" y1="1202" x2="574" y2="1202" stroke="#212121" stroke-width="2"/>
+<line x1="551" y1="1207" x2="569" y2="1207" stroke="#212121" stroke-width="2"/>
+<line x1="556" y1="1212" x2="564" y2="1212" stroke="#212121" stroke-width="2"/>
+<polyline points="560,1150 640,1150" fill="none" stroke="#212121" stroke-width="2" stroke-linejoin="round"/>
+<text x="650" y="1155" font-size="12" text-anchor="start" fill="#1e7bd6" font-weight="700">−12 V → TL074 pin 11</text>
+<text x="40" y="1246" font-size="12" text-anchor="start" fill="#212121" font-weight="400">At the chip: C7 100n from pin 4 to GND and C11 100n from pin 11 to GND.  Module draws about 0.25 A from the Pi’s 5 V.</text>
 <rect x="830" y="996" width="410" height="196" rx="10" fill="#f4f4f6"/>
 <text x="846" y="1020" font-size="13" text-anchor="start" fill="#212121" font-weight="700">TL074 (DIP-14), top view</text>
 <text x="846" y="1044" font-size="12" text-anchor="start" fill="#212121" font-weight="400">1  out A → C3 (in L)</text>
 <text x="846" y="1064" font-size="12" text-anchor="start" fill="#212121" font-weight="400">2  − A</text>
 <text x="846" y="1084" font-size="12" text-anchor="start" fill="#212121" font-weight="400">3  + A</text>
-<text x="846" y="1104" font-size="12" text-anchor="start" fill="#212121" font-weight="400">4  +V</text>
+<text x="846" y="1104" font-size="12" text-anchor="start" fill="#212121" font-weight="400">4  +12 V</text>
 <text x="846" y="1124" font-size="12" text-anchor="start" fill="#212121" font-weight="400">5  + B</text>
 <text x="846" y="1144" font-size="12" text-anchor="start" fill="#212121" font-weight="400">6  − B</text>
 <text x="846" y="1164" font-size="12" text-anchor="start" fill="#212121" font-weight="400">7  out B → C3 (in R)</text>
 <text x="1050" y="1044" font-size="12" text-anchor="start" fill="#212121" font-weight="400">14  out D → C5 (out R)</text>
 <text x="1050" y="1064" font-size="12" text-anchor="start" fill="#212121" font-weight="400">13  − D</text>
 <text x="1050" y="1084" font-size="12" text-anchor="start" fill="#212121" font-weight="400">12  + D</text>
-<text x="1050" y="1104" font-size="12" text-anchor="start" fill="#212121" font-weight="400">11  GND</text>
+<text x="1050" y="1104" font-size="12" text-anchor="start" fill="#212121" font-weight="400">11  −12 V</text>
 <text x="1050" y="1124" font-size="12" text-anchor="start" fill="#212121" font-weight="400">10  + C</text>
 <text x="1050" y="1144" font-size="12" text-anchor="start" fill="#212121" font-weight="400">9  − C</text>
 <text x="1050" y="1164" font-size="12" text-anchor="start" fill="#212121" font-weight="400">8  out C → C5 (out L)</text>

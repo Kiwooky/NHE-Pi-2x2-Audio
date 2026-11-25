@@ -38,27 +38,31 @@ One TL074 on veroboard, between the jacks and the two audio boards:
 - **Outputs (TL074 C and D):** after the DAC board's jack. **S3 INST** pads its ~2 V RMS
   line level down by 15 dB to about 0.38 V RMS, a hot-guitar level for pedals and amps;
   **LINE** passes it straight through, buffered.
-- **Power:** one 12-18 V pedal adapter (centre negative), not the Pi's 5 V. The TL074's
-  inputs must stay 3-4 V above its negative rail and its output 1.5 V inside the rails,
-  so a 9 V supply biased at 4.5 V leaves a guitar no room below. INST works from 12 V;
-  LINE needs 15-18 V (the DAC's ~6 Vp-p). Join the buffer's ground to the audio boards'
-  ground at one point.
+- **Power: one supply for the whole unit, the Pi's USB-C charger.** A small isolated
+  DC-DC module (U2, B0512S-1W) turns the Pi's 5 V (header pin 4) into ±12 V for the
+  TL074. A split supply puts the signal at 0 V with about ±10 V of swing, so there's
+  no bias divider, and LINE mode takes the DAC's full ~6 Vp-p. The module draws about
+  0.25 A from the 5 V. Its 0 V joins the audio ground at one point (the ADC board's GND).
+  R13/R14 with C6/C8 filter the module's switching noise; it's unregulated, so with
+  the TL074's light load the rails may sit nearer ±13-14 V (fine: the TL074 takes ±18 V).
 
 | Part | Each | For |
 |---|---|---|
 | TL074 (DIP-14) + socket | 1 | |
-| 1N5817 | 1 | D1, reverse-polarity protection |
+| B0512S-1W (5 V in, ±12 V out, 1 W, isolated) | 1 | U2 |
 | 1k / 10M / 1M / 2.2M / 4.7M | 2 each | R1, R2, R3a, R3b, R3c |
-| 10k | 4 + 2 + 2 | R4, R5 (inputs); R8 (outputs); R13, R14 (bias) |
+| 10k | 4 + 2 | R4, R5 (inputs); R8 (outputs) |
 | 2.2k / 100R / 100k | 2 / 4 / 4 | R9; R6, R11; R7, R12 |
 | 1M | 2 | R10 |
+| 10R | 2 | R13, R14 (rail filters) |
 | 100n film / 1µ film | 2 / 2 | C1; C4 |
 | 100p ceramic | 2 | C9 |
-| 22µ / 10µ electrolytic, 25 V | 2 / 4 | C2; C3, C5 |
-| 100µ / 47µ electrolytic, 25 V | 1 / 1 | C6; C8 |
-| 100n ceramic | 2 | C7; pin 4 to pin 11 at the chip |
+| 22µ / 10µ non-polar electrolytic | 2 / 4 | C2; C3, C5 |
+| 100µ electrolytic, 25 V | 2 | C6 (+12 V), C8 (−12 V, + side to GND) |
+| 10µ electrolytic, 16 V | 1 | C10, at the module's input |
+| 100n ceramic | 2 | C7 (pin 4 to GND), C11 (pin 11 to GND), at the chip |
 | SP3T (or rotary) / SPST / SPDT | 2 / 2 / 2 | S1; S2; S3 |
-| 3.5 mm plugs (to the boards), ¼" jacks, DC jack | | |
+| 3.5 mm plugs (to the boards), ¼" jacks | | |
 
 Values are a starting point for the breadboard, not yet measured on hardware.
 
