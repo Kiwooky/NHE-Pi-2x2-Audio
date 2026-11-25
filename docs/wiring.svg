@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 748" width="1040" height="748" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<rect width="1040" height="748" fill="#ffffff"/>
+<text x="40" y="48" font-size="26" font-weight="700" fill="#212121">NHE Pi 2x2 Audio: wiring</text>
+<text x="40" y="76" font-size="15" fill="#575757">PCM1808 ADC board (clock master) · Raspberry Pi 5 or 3B+ header · GY-PCM5102 DAC board. One row per wire; arrows point to the receivers.</text>
+<rect x="60" y="92" width="260" height="50" rx="10" fill="#212121"/>
+<text x="190" y="113" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">PCM1808 ADC board</text>
+<text x="190" y="132" font-size="12" fill="#c7c7cc" text-anchor="middle">makes the clocks · 48 kHz</text>
+<rect x="390" y="92" width="260" height="50" rx="10" fill="#212121"/>
+<text x="520" y="113" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">Raspberry Pi header</text>
+<text x="520" y="132" font-size="12" fill="#c7c7cc" text-anchor="middle">receives the clocks</text>
+<rect x="720" y="92" width="260" height="50" rx="10" fill="#212121"/>
+<text x="850" y="113" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">GY-PCM5102 DAC board</text>
+<text x="850" y="132" font-size="12" fill="#c7c7cc" text-anchor="middle">jumpers 1 L · 2 L · 3 H · 4 L</text>
+<rect x="20" y="150.0" width="1000" height="60" rx="6" fill="#f4f4f6"/>
+<text x="34" y="176" font-size="14" font-weight="700" fill="#883996">Master clock</text>
+<text x="34" y="194" font-size="12" fill="#7b7b7b">ADC → DAC</text>
+<line x1="228" y1="180" x2="810" y2="180" stroke="#883996" stroke-width="4" marker-end="url(#arr)"/>
+<rect x="152.0" y="165" width="76" height="30" rx="15" fill="#fff" stroke="#883996" stroke-width="2.5"/>
+<text x="190" y="185" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">MCK</text>
+<rect x="812.0" y="165" width="76" height="30" rx="15" fill="#fff" stroke="#883996" stroke-width="2.5"/>
+<text x="850" y="185" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">SCK</text>
+<text x="1006" y="210" font-size="11.5" fill="#7b7b7b" text-anchor="end" font-style="italic">or tie DAC SCK to GND</text>
+<text x="34" y="240" font-size="14" font-weight="700" fill="#883996">Bit clock</text>
+<text x="34" y="258" font-size="12" fill="#7b7b7b">ADC → Pi + DAC</text>
+<line x1="228" y1="244" x2="443" y2="244" stroke="#883996" stroke-width="4" marker-end="url(#arr)"/>
+<line x1="595" y1="244" x2="810" y2="244" stroke="#883996" stroke-width="4" marker-end="url(#arr)"/>
+<rect x="152.0" y="229" width="76" height="30" rx="15" fill="#fff" stroke="#883996" stroke-width="2.5"/>
+<text x="190" y="249" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">BCK</text>
+<rect x="445.0" y="229" width="150" height="30" rx="15" fill="#fff" stroke="#883996" stroke-width="2.5"/>
+<text x="520" y="249" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">pin 12 · GPIO 18</text>
+<rect x="812.0" y="229" width="76" height="30" rx="15" fill="#fff" stroke="#883996" stroke-width="2.5"/>
+<text x="850" y="249" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">BCK</text>
+<rect x="20" y="278.0" width="1000" height="60" rx="6" fill="#f4f4f6"/>
+<text x="34" y="304" font-size="14" font-weight="700" fill="#883996">Word clock</text>
+<text x="34" y="322" font-size="12" fill="#7b7b7b">ADC → Pi + DAC</text>
+<line x1="228" y1="308" x2="443" y2="308" stroke="#883996" stroke-width="4" marker-end="url(#arr)"/>
+<line x1="595" y1="308" x2="810" y2="308" stroke="#883996" stroke-width="4" marker-end="url(#arr)"/>
+<rect x="152.0" y="293" width="76" height="30" rx="15" fill="#fff" stroke="#883996" stroke-width="2.5"/>
+<text x="190" y="313" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">LRCK</text>
+<rect x="445.0" y="293" width="150" height="30" rx="15" fill="#fff" stroke="#883996" stroke-width="2.5"/>
+<text x="520" y="313" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">pin 35 · GPIO 19</text>
+<rect x="812.0" y="293" width="76" height="30" rx="15" fill="#fff" stroke="#883996" stroke-width="2.5"/>
+<text x="850" y="313" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">LCK</text>
+<text x="34" y="368" font-size="14" font-weight="700" fill="#1e7bd6">Audio in</text>
+<text x="34" y="386" font-size="12" fill="#7b7b7b">ADC → Pi</text>
+<line x1="228" y1="372" x2="443" y2="372" stroke="#1e7bd6" stroke-width="4" marker-end="url(#arr)"/>
+<rect x="152.0" y="357" width="76" height="30" rx="15" fill="#fff" stroke="#1e7bd6" stroke-width="2.5"/>
+<text x="190" y="377" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">DATA</text>
+<rect x="445.0" y="357" width="150" height="30" rx="15" fill="#fff" stroke="#1e7bd6" stroke-width="2.5"/>
+<text x="520" y="377" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">pin 38 · GPIO 20</text>
+<rect x="20" y="406.0" width="1000" height="60" rx="6" fill="#f4f4f6"/>
+<text x="34" y="432" font-size="14" font-weight="700" fill="#1e7bd6">Audio out</text>
+<text x="34" y="450" font-size="12" fill="#7b7b7b">Pi → DAC</text>
+<line x1="595" y1="436" x2="810" y2="436" stroke="#1e7bd6" stroke-width="4" marker-end="url(#arr)"/>
+<rect x="445.0" y="421" width="150" height="30" rx="15" fill="#fff" stroke="#1e7bd6" stroke-width="2.5"/>
+<text x="520" y="441" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">pin 40 · GPIO 21</text>
+<rect x="812.0" y="421" width="76" height="30" rx="15" fill="#fff" stroke="#1e7bd6" stroke-width="2.5"/>
+<text x="850" y="441" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">DIN</text>
+<text x="34" y="496" font-size="14" font-weight="700" fill="#c0392b">5 V</text>
+<text x="34" y="514" font-size="12" fill="#7b7b7b">Pi → DAC</text>
+<line x1="595" y1="500" x2="810" y2="500" stroke="#c0392b" stroke-width="4" marker-end="url(#arr)"/>
+<rect x="445.0" y="485" width="150" height="30" rx="15" fill="#fff" stroke="#c0392b" stroke-width="2.5"/>
+<text x="520" y="505" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">pin 2 (or 4)</text>
+<rect x="812.0" y="485" width="76" height="30" rx="15" fill="#fff" stroke="#c0392b" stroke-width="2.5"/>
+<text x="850" y="505" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">VIN</text>
+<text x="1006" y="530" font-size="11.5" fill="#7b7b7b" text-anchor="end" font-style="italic">ADC: its USB-C, same supply</text>
+<rect x="20" y="534.0" width="1000" height="60" rx="6" fill="#f4f4f6"/>
+<text x="34" y="560" font-size="14" font-weight="700" fill="#323232">Ground</text>
+<text x="34" y="578" font-size="12" fill="#7b7b7b">common</text>
+<line x1="228" y1="564" x2="445" y2="564" stroke="#323232" stroke-width="4"/>
+<line x1="595" y1="564" x2="812" y2="564" stroke="#323232" stroke-width="4"/>
+<rect x="152.0" y="549" width="76" height="30" rx="15" fill="#fff" stroke="#323232" stroke-width="2.5"/>
+<text x="190" y="569" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">GND</text>
+<rect x="445.0" y="549" width="150" height="30" rx="15" fill="#fff" stroke="#323232" stroke-width="2.5"/>
+<text x="520" y="569" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">pin 6 (or 9, 14)</text>
+<rect x="812.0" y="549" width="76" height="30" rx="15" fill="#fff" stroke="#323232" stroke-width="2.5"/>
+<text x="850" y="569" font-size="14" font-weight="700" fill="#212121" text-anchor="middle">GND</text>
+<text x="40" y="618" font-size="13.5" fill="#323232">• Keep BCK, LRCK and MCK short (under ~10 cm): BCK runs at 3.07 MHz.</text>
+<text x="40" y="640" font-size="13.5" fill="#323232">• Power the ADC from the same 5 V supply as the Pi (one ground), or feed its VDD33 from Pi pin 1 with its USB-C unplugged.</text>
+<text x="40" y="662" font-size="13.5" fill="#323232">• ADC in: line level, 3 Vp-p. DAC out: about 2 V RMS, a hot line out. For guitar and pedals use the buffer board (docs/buffer.svg).</text>
+<text x="40" y="684" font-size="13.5" fill="#323232">• Software: dtoverlay=nhe-i2s-duplex and the nhe-i2s-codec module (README). Run JACK at 48000 Hz.</text>
+</svg>
