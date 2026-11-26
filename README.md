@@ -93,11 +93,15 @@ stereo plug with a short lead, DPDT toggle.
 
 ### Edit the layout yourself (VeroRoute)
 
-`docs/nhe-2x2-audio.net` is the board's netlist (every part and connection),
-written by `docs/perfboard.py`. In [VeroRoute](https://sourceforge.net/projects/veroroute/)
-(free, Mac/Windows/Linux): **File > Import > Tango** and pick the file. Every
-part arrives with its connections; drag things around and VeroRoute shows shorts
-and missing connections as you go. Switch the board to perfboard in its settings.
+**`docs/nhe-2x2-audio.vrt`** is the layout as a VeroRoute project: every part in
+place, every track drawn, no broken nets. Open it in [VeroRoute](https://sourceforge.net/projects/veroroute/)
+(free; on a Mac, build it from source: `brew install qt@5`, then in `Src`
+run `$(brew --prefix qt@5)/bin/qmake veroroute.pro && make -j8`). Drag things around
+and VeroRoute shows shorts and broken connections as you go.
+
+`docs/nhe-2x2-audio.net` is the bare netlist (File > Import > Tango), for starting
+from scratch: parts arrive stacked in a corner. `tools/vr_place.cpp` turns the
+netlist plus `docs/vr_place.json` (both written by `docs/perfboard.py`) into the .vrt.
 
 - Resistors come in standing (legs 0.1" apart); stretch any of them to lie flat.
 - Electrolytics: pin 1 is +. C8's + goes to GND (it sits on −12 V).

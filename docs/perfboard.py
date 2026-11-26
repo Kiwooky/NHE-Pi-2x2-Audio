@@ -395,18 +395,34 @@ for ref, kind, val, pins in parts:
         vadd(ref, 'SIP6', val, [by[xs[4]], by[xs[3]], None, by[xs[2]], by[xs[1]], by[xs[0]]])
     else:
         vadd(ref, vr_type(ref, kind, pins), val, [n for x, y, n in pins])
-# off-board wires as pad groups (each pin becomes a pad)
+# off-board wires as pad groups (each pin becomes a pad named GROUP_n); entries are pad labels or (x, y)
 groups = [('PIN', 'jacks IN', ['IN L tip', 'IN L sleeve', 'IN R tip', 'IN R sleeve']),
-          ('PADC', 'to ADC board', ['to ADC L in', None, 'to ADC R in', None]),
-          ('POUT', 'jacks OUT', ['OUT L tip', None, 'OUT R tip', None]),
+          ('PADC', 'to ADC board', ['to ADC L in', (10, 1), 'to ADC R in', (10, 9)]),
+          ('POUT', 'jacks OUT', ['OUT L tip', (27, 9), 'OUT R tip', (27, 1)]),
           ('PDAC', 'from DAC board', ['DAC L', 'DAC GND', 'DAC R']),
           ('PS3', 'switch S3', ['S3 L com', 'S3 L line', 'S3 L inst', 'S3 R com', 'S3 R line', 'S3 R inst']),
           ('PADCP', 'ADC + pin', ['5V to ADC + pin'])]
 bylab = {lab: (x, y, n) for x, y, n, lab, sd in pads if lab}
-gnd_left = [p for p in pads if not p[3]]        # unlabelled GND pads beside ADC and OUT pads
-for name, val, labs in groups:
-    nets = [bylab[l][2] if l else GND for l in labs]
-    vadd(name, 'PADS%d' % len(nets), val, nets)
+byxy = {(x, y): (x, y, n) for x, y, n, lab, sd in pads}
+vpos = {}                                        # name -> [(row, col) per pin]
+for ref, kind, val, pins in parts:
+    if kind == 'sip':
+        xs = sorted(x for x, y, n in pins); y0 = pins[0][1]
+        vpos[ref] = [(y0, xs[-1] - i) for i in range(6)]   # pin 1 (Vin) at the right end, pin 3 is the gap
+    else:
+        vpos[ref] = [(y, x) for x, y, n in pins]
+used = set()
+for name, val, ents in groups:
+    pp = [bylab[e] if isinstance(e, str) else byxy[e] for e in ents]
+    used.update((x, y) for x, y, n in pp)
+    vadd(name, 'PADS%d' % len(pp), val, [n for x, y, n in pp])
+    for k, (x, y, n) in enumerate(pp):
+        vpos[f'{name}_{k+1}'] = [(y, x)]
+assert used == set(byxy), set(byxy) - used
+import json
+json.dump({'rows': ROWS, 'cols': COLS, 'pos': vpos,
+           'tracks': [[NETNAME.get(n, n), [(y, x) for poly in polys for (x, y) in cells(poly)]] for n, polys in traces.items()]},
+          open('docs/vr_place.json', 'w'))
 with open('docs/nhe-2x2-audio.net', 'w') as f:
     for name, typ, value in vparts:
         f.write(f'[\n{name}\n{typ}\n{value}\n\n\n\n]\n')
