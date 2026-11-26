@@ -15,9 +15,17 @@ DAC board
 
 ]
 [
-J1
-STRIP_100MIL6
-to Pi
+JPIO
+STRIP_100MIL20
+Pi GPIO odd pins
+
+
+
+]
+[
+JPIE
+STRIP_100MIL20
+Pi GPIO even pins
 
 
 
@@ -358,25 +366,32 @@ J2-1
 (
 DATA
 J4-2
-J1-1
+JPIE-2
 )
 (
 BCK
 J4-3
 J2-2
-J1-2
+JPIE-15
 )
 (
 LRCK
 J4-4
 J2-4
-J1-3
+JPIO-3
 )
 (
 GND
 J4-6
 J2-5
-J1-4
+JPIO-1
+JPIO-8
+JPIO-16
+JPIE-4
+JPIE-6
+JPIE-11
+JPIE-14
+JPIE-18
 R2a-2
 R7a-2
 R2b-2
@@ -405,12 +420,13 @@ PDAC-2
 (
 DOUT
 J2-3
-J1-6
+JPIE-1
 )
 (
 P5V
 J2-6
-J1-5
+JPIE-19
+JPIE-20
 U2-1
 C10-1
 PADCP-1

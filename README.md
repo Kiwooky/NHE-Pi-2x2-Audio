@@ -81,20 +81,28 @@ draws it and checks it: no two nets share a hole, and every net is connected.
 - **DAC board (GY-PCM5102) on J2:** headers on its six-pin side only (SCK BCK DIN
   LCK GND VIN), body to the right. Its L / G / R pins sit half a hole off the 0.1"
   grid from that header, so they get three short wires to the DAC pads instead.
-- **To the Pi:** J1, six Dupont wires: DATA → pin 38, BCK → pin 12, LRCK → pin 35,
-  GND → pin 6, 5V → pin 2, DOUT → pin 40. That one 5 V wire feeds everything.
+- **On the Pi:** the carrier mounts upside down beside the Pi, overlapping only its
+  GPIO strip: a 2 x 20 female socket on the component side plugs straight onto the Pi's
+  header, and the parts hang toward the enclosure floor. The Pi's fan stays uncovered.
+  Seen from the component side the socket is mirrored: pin 1 is marked; it must meet the
+  Pi's pin 1 (the square pad on the Pi's underside, at the header end away from the USB
+  ports). Pins used: 2/4 (5 V), 12 (BCK), 35 (LRCK), 38 (DIN), 40 (DOUT) and GND.
+- **Three wire links** (insulated, on the trace side): LRCK and DOUT to their GPIO pins
+  (pin 35 is on the edge row, boxed in by other pins) and 5 V to the DAC.
+- **Under the overlap** (rows 32-34) only the socket and traces; the Pi's two mounting
+  holes on that edge sit under the carrier, so use low screw heads there.
 - **U2:** A0512S-1WR3 or XP Power IA0512S (same pins; DigiKey NZ stocks the IA0512S).
 - **Build order:** the converter half first (J1, J2, J4 and their traces): that's
   enough to test audio in and out with the Pi. Then U2 and the TL074 socket (no
   chip): measure about ±12 V on socket pins 4 and 11. Then the rest, then the chip.
 
-Extra parts for the board: 6-pin female header x 2, 6-pin male header, 3.5 mm
-stereo plug with a short lead, DPDT toggle.
+Extra parts for the board: 6-pin female header x 2, 2 x 20 female header, DPDT toggle.
 
 ### Edit the layout yourself (VeroRoute)
 
 **`docs/nhe-2x2-audio.vrt`** is the layout as a VeroRoute project: every part in
-place, every track drawn, no broken nets. Open it in [VeroRoute](https://sourceforge.net/projects/veroroute/)
+place, every track drawn. VeroRoute lists four broken nets: the three wire links
+(LRCK, DOUT, 5 V) and GND, whose two halves join through the Pi's ground pins. Open it in [VeroRoute](https://sourceforge.net/projects/veroroute/)
 (free; on a Mac, build it from source: `brew install qt@5`, then in `Src`
 run `$(brew --prefix qt@5)/bin/qmake veroroute.pro && make -j8`). Drag things around
 and VeroRoute shows shorts and broken connections as you go.

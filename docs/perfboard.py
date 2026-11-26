@@ -19,7 +19,16 @@ def part(ref, kind, val, *pins, shift=True):
 # Digital: converter-board sockets (columns) and the Pi header
 part('J4', 'sock', 'ADC board', (21, 23, 'MCK'), (21, 24, 'DATA'), (21, 25, 'BCK'), (21, 26, 'LRCK'), (21, 27, 'NC_VDD33'), (21, 28, GND), shift=False)
 part('J2', 'sock', 'DAC board', (25, 23, 'MCK'), (25, 24, 'BCK'), (25, 25, 'DOUT'), (25, 26, 'LRCK'), (25, 27, GND), (25, 28, V5), shift=False)
-part('J1', 'hdr', 'to Pi', (17, 33, 'DATA'), (18, 33, 'BCK'), (19, 33, 'LRCK'), (20, 33, GND), (21, 33, V5), (22, 33, 'DOUT'), shift=False)
+# Pi GPIO: 2 x 20 female socket on the component side. The carrier sits upside down beside the Pi,
+# overlapping its GPIO strip, so seen from the component side the header is mirrored:
+# pin 1 at the right end (x 31), odd pins on the edge row (y 34), even pins on row 33.
+PI_X1 = 31
+GPIO = {2: V5, 4: V5, 6: GND, 9: GND, 14: GND, 20: GND, 25: GND, 30: GND, 34: GND, 39: GND,
+        12: 'BCK', 35: 'LRCK', 38: 'DATA', 40: 'DOUT'}
+def gpio_xy(pin):
+    k = (pin + 1) // 2
+    return PI_X1 - (k - 1), (34 if pin % 2 else 33)
+part('JPI', 'gpio', 'Pi GPIO', *[(*gpio_xy(n), GPIO.get(n, f'NC_GPIO{n}')) for n in range(1, 41)], shift=False)
 # TL074, pins 1-7 down the left (x 28), 14-8 down the right (x 31)
 L, R = 28, 31     # first-layout coordinates (shifted by part())
 part('U1', 'dip', 'TL074',
@@ -103,16 +112,19 @@ traces = {n: [[(x + DX, y + DY) for x, y in poly] for poly in polys] for n, poly
 # new: the converter boards, the Pi header and power along the bottom (unshifted coordinates)
 for n, polys in {
     'MCK': [[(21, 23), (25, 23)]],
-    'BCK': [[(21, 25), (22, 25), (22, 24), (25, 24)], [(21, 25), (18, 25), (18, 33)]],
-    'LRCK': [[(21, 26), (25, 26)], [(21, 26), (19, 26), (19, 33)]],
-    'DATA': [[(21, 24), (17, 24), (17, 33)]],
-    'DOUT': [[(25, 25), (26, 25), (26, 32), (22, 32), (22, 33)]],
-    GND: [[(21, 28), (22, 28), (22, 27), (25, 27)], [(21, 28), (20, 28), (20, 34)], [(1, 9), (1, 34), (20, 34)]],
-    V5: [[(25, 28), (25, 31), (21, 31), (21, 33)], [(21, 33), (21, 34), (31, 34), (31, 17)], [(28, 17), (28, 19), (4, 19), (4, 18)]],
+    'BCK': [[(21, 25), (22, 25), (22, 24), (25, 24)], [(25, 24), (26, 24), (26, 33)]],
+    'LRCK': [[(21, 26), (25, 26)], [(21, 26), (19, 26), (19, 31)]],
+    'DATA': [[(21, 24), (17, 24), (17, 32), (13, 32), (13, 33)]],
+    'DOUT': [[(25, 25), (23, 25)], [(12, 32), (12, 33)]],
+    GND: [[(21, 28), (22, 28), (22, 27), (25, 27)], [(22, 28), (22, 33)], [(1, 9), (1, 34), (12, 34)]],
+    V5: [[(31, 17), (31, 33)], [(30, 33), (30, 32), (31, 32)], [(31, 19), (4, 19), (4, 18)], [(25, 28), (25, 30)]],
 }.items():
     traces.setdefault(n, []).extend(polys)
 # insulated wire links on the component side: (net, a, b)
-links = []
+links = [('LRCK', (19, 31), (14, 34)), ('DOUT', (23, 25), (12, 32)), (V5, (25, 30), (31, 30))]
+# the Pi joins its own GND pins (its ground plane): only for the connection check, not built
+pi_gnd = [gpio_xy(n) for n, net in sorted(GPIO.items()) if net == GND]
+pi_links = [(GND, a_, b_) for a_, b_ in zip(pi_gnd, pi_gnd[1:])]
 
 # ---------- check ----------
 def cells(poly):
@@ -159,7 +171,7 @@ for net, polys in traces.items():
         cs = cells(poly)
         for a, b in zip(cs, cs[1:]):
             u(a, b)
-for net, a, b in links:
+for net, a, b in links + pi_links:
     if own.get(a) != net or own.get(b) != net:
         err.append(f'link ends not on {net}: {a} {b}')
     u(a, b)
@@ -206,7 +218,7 @@ def board(ox, oy, title, sub, mirror):
 
 W = (COLS + 1) * P + 120
 H1 = (ROWS + 1) * P
-H = 110 + H1 + 90 + H1 + 230
+H = 110 + H1 + 140 + H1 + 230
 a(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" font-family="Helvetica, Arial, sans-serif">')
 a(f'<rect width="{W}" height="{H}" fill="#fff"/>')
 t(40, 40, 'NHE Pi 2x2 Audio: perfboard layout (pad per hole, 40 × 35 holes, about 10 × 9 cm)', 24, 'start', weight='700')
@@ -227,11 +239,18 @@ def outline(x0, y0, x1, y1, col, title, sub):
 ADCC, DACC = '#2a7a8c', '#6d4aa8'
 outline(2.2, 19.6, 21.9, 31.4, ADCC, 'PCM1808 ADC board (DM-AMAD01)', 'traces only underneath')
 a(f'<rect x="{X(1.4)}" y="{Y(28.2)}" width="{P*2.2}" height="{P*2.6}" rx="3" fill="{ADCC}" fill-opacity="0.35"/>')
-t(X(3.9), Y(29.4) + 4, '3.5 mm in: pigtail to the ADC L / R pads', 10, 'start', ADCC, '700')
+t(X(3.9), Y(29.4) + 4, 'jack removed: L, R, GND leads from its pads to the ADC pads', 10, 'start', ADCC, '700')
 for xx in (5.8, 6.7):
     a(f'<circle cx="{X(xx)}" cy="{Y(20.3)}" r="4" fill="none" stroke="{ADCC}" stroke-width="2"/>')
 t(X(7.3), Y(20.3) + 4, '+ and − (wire + to the 5V pad)', 10, 'start', ADCC, '700')
 outline(24.6, 22.2, 38.2, 28.5, DACC, 'GY-PCM5102 DAC', 'no header on its top row')
+# the Pi: upright, beside the carrier; the carrier overlaps its GPIO strip (from y 32.1 down)
+PIC = '#c0392b'
+a(f'<rect x="{X(0.8)}" y="{Y(32.12)}" width="{X(34.3)-X(0.8)}" height="{P*5}" fill="{PIC}" fill-opacity="0.07" stroke="{PIC}" stroke-width="1.6" stroke-dasharray="6 4"/>')
+for hx in (10.1, 32.9):
+    a(f'<circle cx="{X(hx)}" cy="{Y(33.5)}" r="{P*0.53:.1f}" fill="none" stroke="{PIC}" stroke-width="1.6"/>')
+t(X(17.5), Y(36.4), 'Raspberry Pi (upright, under this edge; it continues off the board) · circles: its mounting holes', 10, color=PIC, weight='700')
+
 a(f'<rect x="{X(38.2)}" y="{Y(23.0)}" width="{P*1.2}" height="{P*4.4}" rx="3" fill="{DACC}" fill-opacity="0.35"/>')
 for xx, nm in ((32.5, 'G'), (33.5, 'R'), (34.5, 'G'), (35.5, 'L')):
     a(f'<circle cx="{X(xx)}" cy="{Y(22.7)}" r="4" fill="#fff" stroke="{DACC}" stroke-width="2"/>')
@@ -251,8 +270,7 @@ for ref, kind, val, pins in parts:
             a(f'<rect x="{min(xs)-P*0.45}" y="{ys[0]-P*0.45}" width="{max(xs)-min(xs)+P*0.9}" height="{P*0.9}" fill="{fill}" rx="2"/>')
         for x, y, n in pins:
             a(f'<rect x="{X(x)-3}" y="{Y(y)-3}" width="6" height="6" fill="#d8b36a"/>')
-        names = {'J4': ['MCK', 'DATA', 'BCK', 'LRCK', 'VDD33 (nc)', 'GND'], 'J2': ['SCK', 'BCK', 'DIN', 'LCK', 'GND', 'VIN'],
-                 'J1': ['DATA → pin 38', 'BCK → pin 12', 'LRCK → pin 35', 'GND → pin 6', '5V → pin 2', 'DOUT → pin 40']}[ref]
+        names = {'J4': ['MCK', 'DATA', 'BCK', 'LRCK', 'VDD33 (nc)', 'GND'], 'J2': ['SCK', 'BCK', 'DIN', 'LCK', 'GND', 'VIN']}[ref]
         for (x, y, n), nm in zip(pins, names):
             if ref == 'J4':
                 t(X(x) - P * 0.6, Y(y) + 3.5, nm, 8.5, 'end', ADCC, '700')
@@ -264,6 +282,20 @@ for ref, kind, val, pins in parts:
             t(X(23), Y(33) + 4, 'J1 to the Pi (Dupont wires)', 10, 'start', weight='700')
         else:
             t(xs[0], min(ys) - P * 0.7, ref, 10, weight='700')
+    elif kind == 'gpio':
+        x0g, x1g = min(p[0] for p in pins), max(p[0] for p in pins)
+        a(f'<rect x="{X(x0g)-P*0.45}" y="{Y(33)-P*0.45}" width="{X(x1g)-X(x0g)+P*0.9}" height="{P*1.9}" fill="#333" rx="2"/>')
+        for x, y, n in pins:
+            col = '#d8b36a' if not n.startswith('NC_') else '#777'
+            a(f'<rect x="{X(x)-3}" y="{Y(y)-3}" width="6" height="6" fill="{col}"/>')
+        a(f'<rect x="{X(PI_X1)-6}" y="{Y(34)-6}" width="12" height="12" fill="none" stroke="#e33" stroke-width="2"/>')
+        t(X(PI_X1) + P * 0.7, Y(34) + 4, 'pin 1', 10, 'start', '#e33', '700')
+        lab = {2: '5V', 4: '5V', 6: 'GND', 12: 'BCK', 14: 'GND', 20: 'GND', 30: 'GND', 34: 'GND', 35: 'LRCK', 38: 'DIN', 40: 'DOUT', 39: 'GND', 25: 'GND', 9: 'GND'}
+        for n_, nm in lab.items():
+            x, y = gpio_xy(n_)
+            if y == 33:
+                a(f'<text x="{X(x)}" y="{Y(32)-P*0.1}" font-size="8" text-anchor="start" fill="{INK}" font-weight="700" transform="rotate(-90 {X(x)} {Y(32)-P*0.1})" dy="3">{nm}</text>')
+        t(X(x0g) - P * 0.6, Y(33.5) + 4, 'Pi GPIO socket (2 × 20)', 10, 'end', weight='700')
     elif kind == 'dip':
         L2, R2, T2, B2 = min(p[0] for p in pins), max(p[0] for p in pins), min(p[1] for p in pins), max(p[1] for p in pins)
         a(f'<rect x="{X(L2)-P*0.4}" y="{Y(T2)-P*0.6}" width="{X(R2)-X(L2)+P*0.8}" height="{Y(B2)-Y(T2)+P*1.2}" rx="3" fill="#2b2b2b"/>')
@@ -307,7 +339,7 @@ for ref, kind, val, pins in parts:
             t(mx, my + dy * P * 1.05 + (4 if dy > 0 else 0), lab, 10)
 for net, (x0, y0), (x1, y1) in links:
     a(f'<line x1="{X(x0)}" y1="{Y(y0)}" x2="{X(x1)}" y2="{Y(y1)}" stroke="#2a7a2a" stroke-width="3"/>')
-    t(X(x0) + 7, (Y(y0) + Y(y1)) / 2 + 4, 'link (GND)', 9, 'start', '#2a7a2a', '700')
+    t((X(x0) + X(x1)) / 2 + 6, (Y(y0) + Y(y1)) / 2 - 4, 'link: ' + net.replace('5V', '5 V'), 9.5, 'start', '#2a7a2a', '700')
 def padlabels(X, Y, mirror):
     for x, y, net, lab, side in pads:
         a(f'<circle cx="{X(x)}" cy="{Y(y)}" r="{P*0.36:.1f}" fill="none" stroke="{ACC}" stroke-width="2.2"/>')
@@ -331,7 +363,7 @@ def padlabels(X, Y, mirror):
 padlabels(X, Y, False)
 
 # ----- solder side -----
-oy2 = oy + H1 + 90
+oy2 = oy + H1 + 140
 X2, Y2 = board(ox, oy2, 'Solder side (board flipped left to right)', 'Make each line a trace: solder bridges between pads, or tinned wire for long runs. Purple rings: wire pads.', True)
 for net, polys in traces.items():
     for poly in polys:
@@ -351,11 +383,12 @@ for i, (lab, c) in enumerate([('Ground', NETC[GND]), ('+12 V', NETC[VP]), ('−1
     x = 60 + i * 140
     a(f'<rect x="{x}" y="{ly}" width="26" height="8" rx="4" fill="{c}"/>'); t(x + 34, ly + 8, lab, 12, 'start')
 notes = [
-    'J4 and J2 match the boards in the photos: plug each board in component side up, its body over the dashed outline.',
-    'DAC: solder headers on its six-pin side only. Its L / G / R pins are half a hole off the grid: three short wires to the DAC pads.',
-    'ADC: audio goes in through its own 3.5 mm jack: a short stereo plug pigtail from the ADC L / R pads (sleeve to GND). One wire from its + pin to the 5V pad.',
-    'S3: one DPDT toggle for both channels. Per channel: common to "S3 com", one throw to "line", the other to "inst".',
-    'U2: A0512S-1WR3 or XP IA0512S (same pins). Build the power first and measure about ±12 V on the TL074 socket pins 4 and 11 before fitting the chip.',
+    'The carrier mounts upside down beside the Pi: the GPIO socket (component side) plugs onto the Pi, parts hang toward the enclosure floor.',
+    'Check pin 1 before soldering the socket: it must meet the Pi’s pin 1 (square pad on the Pi’s underside, at the header end away from the USB ports).',
+    'Three insulated wire links (drawn in green): LRCK and DOUT reach their GPIO pins, and 5 V reaches the DAC. Run them on the trace side.',
+    'Under the overlap (rows 32-34) only the socket and traces. The Pi’s two holes on this edge sit under the carrier: low screw heads only.',
+    'DAC: L / G / R by three short wires. ADC: leads off its jack pads (jack removed), one wire from its + pin to the 5V pad.',
+    'U2: A0512S-1WR3 or XP IA0512S. Build the power first and measure about ±12 V on the TL074 socket pins 4 and 11 before fitting the chip.',
 ]
 for j, n in enumerate(notes):
     t(60, ly + 40 + j * 22, '• ' + n, 12.5, 'start', '#323232')
@@ -389,6 +422,11 @@ def vadd(name, typ, value, nets):               # nets: list of net per pin (pin
         if n and not n.startswith('NC_'):
             vnets.setdefault(NETNAME.get(n, n), []).append(f'{name}-{i+1}')
 for ref, kind, val, pins in parts:
+    if kind == 'gpio':
+        for nm, row, lab in (('JPIO', 34, 'Pi GPIO odd pins'), ('JPIE', 33, 'Pi GPIO even pins')):
+            rp = sorted((p for p in pins if p[1] == row), key=lambda p: p[0])
+            vadd(nm, 'STRIP_100MIL20', lab, [n for x, y, n in rp])
+        continue
     if kind == 'sip':                           # U2: 1 Vin, 2 GND, 3 no pin, 4 -Vo, 5 0V, 6 +Vo
         by = {x: n for x, y, n in pins}
         xs = sorted(by)                         # +Vo, 0V, -Vo, GND, Vin (left to right)
@@ -406,6 +444,10 @@ bylab = {lab: (x, y, n) for x, y, n, lab, sd in pads if lab}
 byxy = {(x, y): (x, y, n) for x, y, n, lab, sd in pads}
 vpos = {}                                        # name -> [(row, col) per pin]
 for ref, kind, val, pins in parts:
+    if kind == 'gpio':
+        for nm, row in (('JPIO', 34), ('JPIE', 33)):
+            vpos[nm] = [(y, x) for x, y, n in sorted((p for p in pins if p[1] == row), key=lambda p: p[0])]
+        continue
     if kind == 'sip':
         xs = sorted(x for x, y, n in pins); y0 = pins[0][1]
         vpos[ref] = [(y0, xs[-1] - i) for i in range(6)]   # pin 1 (Vin) at the right end, pin 3 is the gap
