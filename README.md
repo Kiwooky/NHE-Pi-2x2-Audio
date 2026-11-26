@@ -65,6 +65,22 @@ One TL074 between the jacks and the two audio boards, each section a unity-gain 
 
 Values are a starting point, not yet measured on hardware.
 
+## Build layout
+
+![Build layout: component side and solder side, from the VeroRoute project](docs/layout.svg)
+
+The board as laid out in VeroRoute (`docs/nhe-2x2-audio.vrt`), drawn by
+`docs/vrt_view.py` from a dump of the project (`tools/vr_dump.cpp` → `docs/vr_layout.json`)
+and checked against the netlist: every net is connected once the two wire links are in.
+
+- **Two wire links** (green, on the trace side, each hopping one GPIO pin): L1 from J4 pin 4
+  to GPIO 35 (LRCK), L2 from J4 pin 6 to GPIO 39 (the ADC's ground).
+- **R14 lies flat:** standing, it would hit the top of the ADC board.
+- **Overlap with the Pi:** the traces on row 33 put the board edge about 9 mm over the Pi.
+  Check it clears the Pi 5 Active Cooler, or move those traces up.
+
+The first, generated layout is below, for reference.
+
 ## Perfboard layout (everything on one board)
 
 ![Perfboard layout: component side and solder side, 40 x 35 holes](docs/perfboard.svg)
