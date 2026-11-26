@@ -33,8 +33,9 @@ One TL074 on veroboard, between the jacks and the two audio boards:
 - **Inputs (TL074 A and B):** a buffer for a guitar, in front of the ADC board's
   3.5 mm jack. **S1** picks the input impedance: about 0.9 / 1.8 / 3.2 MΩ (R3a/b/c in
   parallel with R2's 10 MΩ; higher keeps more of a single coil's top end, and picks
-  up more hum: keep the input wiring short and shielded). **S2** adds +6 dB for
-  quiet pickups. The ADC clips at 3 Vp-p: leave the boost off for hot humbuckers.
+  up more hum: keep the input wiring short and shielded). Unity gain: the ADC
+  clips at 3 Vp-p, which leaves a single coil 4-10 dB of headroom. Add gain in
+  software (a gain plugin) if you want it; the PCM1808's ~99 dB of range has room.
 - **Outputs (TL074 C and D):** after the DAC board's jack. **S3 INST** pads its ~2 V RMS
   line level down by 15 dB to about 0.38 V RMS, a hot-guitar level for pedals and amps;
   **LINE** passes it straight through, buffered.
@@ -51,17 +52,17 @@ One TL074 on veroboard, between the jacks and the two audio boards:
 | TL074 (DIP-14) + socket | 1 | |
 | B0512S-1W (5 V in, ±12 V out, 1 W, isolated) | 1 | U2 |
 | 1k / 10M / 1M / 2.2M / 4.7M | 2 each | R1, R2, R3a, R3b, R3c |
-| 10k | 4 + 2 | R4, R5 (inputs); R8 (outputs) |
+| 10k | 2 + 2 | R4 (inputs); R8 (outputs) |
 | 2.2k / 100R / 100k | 2 / 4 / 4 | R9; R6, R11; R7, R12 |
 | 1M | 2 | R10 |
 | 10R | 2 | R13, R14 (rail filters) |
 | 100n film / 1µ film | 2 / 2 | C1; C4 |
 | 100p ceramic | 2 | C9 |
-| 22µ / 10µ non-polar electrolytic | 2 / 4 | C2; C3, C5 |
+| 10µ non-polar electrolytic | 4 | C3, C5 |
 | 100µ electrolytic, 25 V | 2 | C6 (+12 V), C8 (−12 V, + side to GND) |
 | 10µ electrolytic, 16 V | 1 | C10, at the module's input |
 | 100n ceramic | 2 | C7 (pin 4 to GND), C11 (pin 11 to GND), at the chip |
-| SP3T (or rotary) / SPST / SPDT | 2 / 2 / 2 | S1; S2; S3 |
+| SP3T (or rotary) / SPDT | 2 / 2 | S1; S3 |
 | 3.5 mm plugs (to the boards), ¼" jacks | | |
 
 Values are a starting point for the breadboard, not yet measured on hardware.

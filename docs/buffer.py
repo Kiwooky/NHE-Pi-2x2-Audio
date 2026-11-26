@@ -127,16 +127,10 @@ wire((800, yo), (860, yo)); dot(860, yo)
 fy = y + 110
 wire((860, yo), (860, fy)); dot(860, fy)
 res_h(730, fy, 'R4', '10k', L=130)            # 730..860
-wire((730, fy), (670, fy), (670, y + 40), (700, y + 40)); dot(670, fy); dot(710, fy)
+wire((730, fy), (670, fy), (670, y + 40), (700, y + 40)); dot(710, fy)
+t(765, fy + 72, 'follower (unity gain)', 11, 'middle', MUTE)
 cap_h(730, fy + 44, 'C9', '100p', L=130)
 wire((730, fy + 44), (710, fy + 44), (710, fy)); wire((860, fy + 44), (860, fy))
-# S2, boost: the − input through R5 + C2 to ground (gain 2 when closed)
-res_v(670, fy, 'R5', '10k', L=64, side='left')
-cap_v(670, fy + 64, 'C2', '22µ NP', L=44, side='left')
-wire((670, fy + 108), (670, fy + 116)); throw(670, fy + 120)
-a(f'<line x1="670" y1="{fy+124}" x2="692" y2="{fy+144}" stroke="{INK}" stroke-width="2.5"/>')
-throw(670, fy + 150); gnd(670, fy + 154)
-t(704, fy + 142, 'S2  boost +6 dB (SPST)', 12, color=ACC, weight='700')
 # out to the ADC board
 wire((860, yo), (900, yo))
 cap_h(900, yo, 'C3', '10µ NP')      # 900..944
