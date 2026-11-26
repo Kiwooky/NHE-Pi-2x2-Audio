@@ -53,7 +53,7 @@ for i, (lab, kind, ad, pi, da, dirn, note) in enumerate(rows):
 yb = TOP + ROW * len(rows) + 20
 notes = [
   'Keep BCK, LRCK and MCK short (under ~10 cm): BCK runs at 3.07 MHz.',
-  'Power the ADC from the same 5 V supply as the Pi (one ground), or feed its VDD33 from Pi pin 1 with its USB-C unplugged.',
+  'Power the ADC from the Pi’s 5 V (its 5 V pin if it has one, or its USB-C from a Pi USB port): the PCM1808’s analog side needs 5 V.',
   'ADC in: line level, 3 Vp-p. DAC out: about 2 V RMS, a hot line out. For guitar and pedals use the buffer board (docs/buffer.svg).',
   'Software: dtoverlay=nhe-i2s-duplex and the nhe-i2s-codec module (README). Run JACK at 48000 Hz.',
 ]

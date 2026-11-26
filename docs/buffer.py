@@ -3,7 +3,7 @@
 import html
 o = []
 a = o.append
-W, H = 1280, 1184
+W, H = 1280, 1104
 INK, MUTE, ACC, BLUE, RED = '#212121', '#7b7b7b', '#883996', '#1e7bd6', '#c0392b'
 
 def t(x, y, s, size=13, anchor='start', color=INK, weight='400', italic=False):
@@ -114,14 +114,10 @@ wire((340, y), (700, y))
 opamp(700, y, '¼ TL074 A')                    # + (700,y), − (700,y+40), out (800,y+20)
 yo = y + 20
 wire((800, yo), (860, yo)); dot(860, yo)
-# feedback: R4 with C9 across it, from the output back to the − input
-fy = y + 110
-wire((860, yo), (860, fy)); dot(860, fy)
-res_h(730, fy, 'R4', '10k', L=130)            # 730..860
-wire((730, fy), (670, fy), (670, y + 40), (700, y + 40)); dot(710, fy)
-t(765, fy + 72, 'follower (unity gain)', 11, 'middle', MUTE)
-cap_h(730, fy + 44, 'C9', '100p', L=130)
-wire((730, fy + 44), (710, fy + 44), (710, fy)); wire((860, fy + 44), (860, fy))
+# follower: output straight back to the - input
+fy = y + 80
+wire((860, yo), (860, fy), (670, fy), (670, y + 40), (700, y + 40))
+t(765, fy + 20, 'follower (unity gain)', 11, 'middle', MUTE)
 # out to the ADC board
 wire((860, yo), (900, yo))
 cap_h(900, yo, 'C3', '10µ NP')      # 900..944
@@ -133,7 +129,7 @@ wire((1070, yo), (1140, yo)); jack(1149, yo, 'to ADC L / R', right=True)
 t(1200, yo + 30, '(3.5 mm tip / ring)', 11, 'middle', MUTE)
 
 # ---------------- output channel ----------------
-Y2 = 480
+Y2 = 400
 section(Y2, 'Output  × 2', 'TL074 C: output L (pins 8–10)  ·  TL074 D: output R (pins 12–14)  ·  DAC board L / R → this → pedals, amp')
 y = Y2 + 176
 jack(70, y, 'from DAC L / R', below=True)
@@ -147,7 +143,7 @@ wire((110, y), (110, y - 52), (300, y - 52)); throw(304, y - 52)
 t(304, y + 24, 'INST', 11, 'middle', ACC, '700'); t(304, y - 64, 'LINE', 11, 'middle', ACC, '700')
 dot(350, y - 26)
 a(f'<line x1="350" y1="{y-26}" x2="310" y2="{y-6}" stroke="{INK}" stroke-width="2.5"/>')
-t(380, y - 64, 'S3  level (SPDT)', 12, 'start', ACC, '700')
+t(380, y - 64, 'S3  level (DPDT: both channels)', 12, 'start', ACC, '700')
 wire((350, y - 26), (380, y - 26))
 cap_h(380, y - 26, 'C4', '1µ film')          # 380..424
 wire((424, y - 26), (470, y - 26)); dot(470, y - 26)
@@ -168,7 +164,7 @@ wire((1070, yo), (1140, yo)); jack(1149, yo, 'OUT L / R', right=True)
 t(1185, yo + 30, '(¼" jacks)', 11, 'middle', MUTE)
 
 # ---------------- power ----------------
-Y3 = 814
+Y3 = 734
 section(Y3, 'Power: ±12 V from the Pi’s 5 V', 'One supply for the whole unit: the Pi’s USB-C charger. An isolated DC-DC module makes ±12 V; its 0 V joins audio GND.')
 y = Y3 + 130
 a(f'<rect x="40" y="{y-22}" width="96" height="44" rx="6" fill="#fff" stroke="{INK}" stroke-width="2"/>')
@@ -180,15 +176,15 @@ wire((200, y), (260, y))
 mx, my = 260, y - 40
 a(f'<rect x="{mx}" y="{my}" width="150" height="150" rx="8" fill="#f4eef6" stroke="{ACC}" stroke-width="2.5"/>')
 t(mx + 75, my + 64, 'U2', 13, 'middle', ACC, '700')
-t(mx + 75, my + 82, 'B0512S-1W', 12, 'middle', ACC, '700')
-t(mx + 75, my + 98, '5 V → ±12 V, isolated', 10, 'middle', MUTE)
-t(mx + 8, y + 4, 'Vin', 11); t(mx + 8, y + 104, 'GND', 11)
+t(mx + 75, my + 82, 'A0512S-1WR3', 12, 'middle', ACC, '700')
+t(mx + 75, my + 98, '5 V → ±12 V', 10, 'middle', MUTE)
+t(mx + 8, y + 4, '1 Vin', 11); t(mx + 8, y + 104, '2 GND', 11)
 wire((mx, y + 100), (230, y + 100)); gnd(230, y + 100)
-t(mx + 142, y + 4, '+Vo', 11, 'end'); t(mx + 142, y + 54, '0V', 11, 'end'); t(mx + 142, y + 104, '−Vo', 11, 'end')
+t(mx + 142, y + 4, '+Vo 6', 11, 'end'); t(mx + 142, y + 54, '0V 5', 11, 'end'); t(mx + 142, y + 104, '−Vo 4', 11, 'end')
 ox = mx + 150
 # +12 rail
 wire((ox, y), (440, y)); res_h(440, y, 'R13', '10R'); wire((504, y), (560, y)); dot(560, y)
-cap_v(560, y, 'C6', '100µ', polar=True, L=44); gnd(560, y + 44)
+cap_v(560, y, 'C6', '47µ', polar=True, L=44); gnd(560, y + 44)
 wire((560, y), (640, y)); t(650, y + 5, '+12 V → TL074 pin 4', 12, color=RED, weight='700')
 # 0 V
 wire((ox, y + 50), (440, y + 50)); gnd(440, y + 50)
@@ -196,7 +192,7 @@ t(600, y + 56, 'audio GND (one point)', 11, color=MUTE)
 # -12 rail
 yn = y + 100
 wire((ox, yn), (440, yn)); res_h(440, yn, 'R14', '10R'); wire((504, yn), (560, yn)); dot(560, yn)
-cap_v(560, yn, 'C8', '100µ, + side to GND', L=44); gnd(560, yn + 44)
+cap_v(560, yn, 'C8', '47µ, + side to GND', L=44); gnd(560, yn + 44)
 wire((560, yn), (640, yn)); t(650, yn + 5, '−12 V → TL074 pin 11', 12, color=BLUE, weight='700')
 t(40, y + 196, 'At the chip: C7 100n from pin 4 to GND and C11 100n from pin 11 to GND.  Module draws about 0.25 A from the Pi’s 5 V.', 12)
 
@@ -204,8 +200,8 @@ t(40, y + 196, 'At the chip: C7 100n from pin 4 to GND and C11 100n from pin 11 
 bx = 830
 a(f'<rect x="{bx}" y="{Y3+76}" width="410" height="196" rx="10" fill="#f4f4f6"/>')
 t(bx + 16, Y3 + 100, 'TL074 (DIP-14), top view', 13, weight='700')
-left = ['1  out A → C3 (in L)', '2  − A', '3  + A', '4  +12 V', '5  + B', '6  − B', '7  out B → C3 (in R)']
-right = ['14  out D → C5 (out R)', '13  − D', '12  + D', '11  −12 V', '10  + C', '9  − C', '8  out C → C5 (out L)']
+left = ['1  out A → C3 (in L)', '2  − A (to 1)', '3  + A', '4  +12 V', '5  + B', '6  − B (to 7)', '7  out B → C3 (in R)']
+right = ['14  out D → C5 (out R)', '13  − D (to 14)', '12  + D', '11  −12 V', '10  + C', '9  − C (to 8)', '8  out C → C5 (out L)']
 for i, s in enumerate(left):
     t(bx + 16, Y3 + 124 + i * 20, s, 12)
 for i, s in enumerate(right):

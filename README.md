@@ -17,7 +17,7 @@ Pi 3B+.
 | Audio out    |               | pin 40, GPIO 21    | DIN                     |
 | Master clock | MCK (out)     |                    | SCK (or SCK to GND)     |
 | Ground       | GND           | pin 6 / 9 / 14     | GND                     |
-| Power        | USB-C 5 V, same supply as the Pi (or VDD33 from pin 1, USB-C unplugged) | | VIN to pin 2 or 4 (5 V) |
+| Power        | 5 V from the Pi: its 5 V pin, or its USB-C from a Pi USB port (the analog side needs 5 V; 3.3 V alone won't do) | | VIN to pin 2 or 4 (5 V) |
 
 - **DAC jumpers** on the back: 1 = L, 2 = L, 3 = H, 4 = L (3 is XSMT: on L the DAC stays silent). Leave the SCK jumper open if MCK feeds SCK.
 - **Short clock wires** (BCK is ~3 MHz): under ~10 cm.
@@ -26,44 +26,64 @@ Pi 3B+.
 
 ## Buffer board (guitar in, pedal-level out)
 
-![Buffer board schematic: two high-impedance inputs, two padded and buffered outputs, power and bias, TL074 pinout](docs/buffer.svg)
+![Buffer board schematic: two high-impedance inputs, two padded and buffered outputs, power, TL074 pinout](docs/buffer.svg)
 
-One TL074 on veroboard, between the jacks and the two audio boards:
+One TL074 between the jacks and the two audio boards, each section a unity-gain follower:
 
-- **Inputs (TL074 A and B):** a buffer for a guitar, in front of the ADC board's
-  3.5 mm jack. 1 MΩ input impedance (R2), the same as a MOD Duo. Unity gain: the ADC
+- **Inputs (TL074 A and B):** a buffer for a guitar, in front of the ADC board.
+  1 MΩ input impedance (R2), the same as a MOD Duo. Unity gain: the ADC
   clips at 3 Vp-p, which leaves a single coil 4-10 dB of headroom. Add gain in
   software (a gain plugin) if you want it; the PCM1808's ~99 dB of range has room.
-- **Outputs (TL074 C and D):** after the DAC board's jack. **S3 INST** pads its ~2 V RMS
+- **Outputs (TL074 C and D):** after the DAC board. **S3 INST** pads its ~2 V RMS
   line level down by 15 dB to about 0.38 V RMS, a hot-guitar level for pedals and amps;
-  **LINE** passes it straight through, buffered.
-- **Power: one supply for the whole unit, the Pi's USB-C charger.** A small isolated
-  DC-DC module (U2, B0512S-1W) turns the Pi's 5 V (header pin 4) into ±12 V for the
-  TL074. A split supply puts the signal at 0 V with about ±10 V of swing, so there's
+  **LINE** passes it straight through, buffered. S3 is one DPDT toggle for both channels.
+- **Power: one supply for the whole unit, the Pi's USB-C charger.** An isolated
+  DC-DC module (U2, A0512S-1WR3: 5 V in, ±12 V out) runs from the Pi's 5 V (header
+  pin 4). A split supply puts the signal at 0 V with about ±10 V of swing, so there's
   no bias divider, and LINE mode takes the DAC's full ~6 Vp-p. The module draws about
-  0.25 A from the 5 V. Its 0 V joins the audio ground at one point (the ADC board's GND).
+  0.25 A from the 5 V. Its 0 V and GND pins both join the board's ground.
   R13/R14 with C6/C8 filter the module's switching noise; it's unregulated, so with
   the TL074's light load the rails may sit nearer ±13-14 V (fine: the TL074 takes ±18 V).
+  Keep C6/C8 at 47 µF: these modules can fail to start into much more capacitance.
+  Note the name: the A0512S is ±12 V; a **B0512S** is a single 12 V output.
 
 | Part | Each | For |
 |---|---|---|
-| TL074 (DIP-14) + socket | 1 | |
-| B0512S-1W (5 V in, ±12 V out, 1 W, isolated) | 1 | U2 |
+| TL074 (DIP-14) + socket | 1 | U1 |
+| A0512S-1WR3 (5 V in, ±12 V out, 1 W, isolated, SIP) | 1 | U2 |
 | 1k / 1M | 2 / 2 | R1; R2 |
-| 10k | 2 + 2 | R4 (inputs); R8 (outputs) |
-| 2.2k / 100R / 100k | 2 / 4 / 4 | R9; R6, R11; R7, R12 |
-| 1M | 2 | R10 |
+| 100R / 100k | 4 / 4 | R6, R11; R7, R12 |
+| 10k / 2.2k / 1M | 2 / 2 / 2 | R8; R9; R10 |
 | 10R | 2 | R13, R14 (rail filters) |
-| 100n film / 1µ film | 2 / 2 | C1; C4 |
-| 100p ceramic | 2 | C9 |
+| 100n film (5 mm) / 1µ film (7.5 mm) | 2 / 2 | C1; C4 |
 | 10µ non-polar electrolytic | 4 | C3, C5 |
-| 100µ electrolytic, 25 V | 2 | C6 (+12 V), C8 (−12 V, + side to GND) |
+| 47µ electrolytic, 25 V | 2 | C6 (+12 V), C8 (−12 V, + side to GND) |
 | 10µ electrolytic, 16 V | 1 | C10, at the module's input |
 | 100n ceramic | 2 | C7 (pin 4 to GND), C11 (pin 11 to GND), at the chip |
-| SPDT | 2 | S3 |
-| 3.5 mm plugs (to the boards), ¼" jacks | | |
+| DPDT toggle | 1 | S3 |
+| ¼" jacks | 4 | IN L/R, OUT L/R |
 
-Values are a starting point for the breadboard, not yet measured on hardware.
+Values are a starting point, not yet measured on hardware.
+
+## Perfboard layout (everything on one board)
+
+![Perfboard layout: component side and solder side of a 9 x 15 cm pad-per-hole board](docs/perfboard.svg)
+
+The buffer, the power module and both converter boards on one 9 x 15 cm
+pad-per-hole board. The converter boards plug into female header sockets, so
+they can come off. `docs/perfboard.py` draws it and checks it: no two nets share
+a hole, and every net is connected.
+
+- **Sockets:** J2 takes the GY-PCM5102 (SCK BCK DIN LCK GND VIN). J4's order for
+  the PCM1808 board (DATA 5V GND LRCK BCK MCK) is a guess: check it against your
+  board before soldering the J4 traces.
+- **To the Pi:** J1 (6 pins, Dupont wires): BCK → pin 12, DOUT → pin 40, LRCK → pin 35,
+  GND → pin 6, 5V → pin 2, DIN → pin 38. J6: 5 V for the power module → pin 4.
+- **Audio leads:** short 3-wire leads (L, GND, R) from the boards' audio pads or jacks
+  to the DAC and ADC pads.
+- **One wire link** on the component side joins the digital ground to the audio ground.
+- **Build order:** traces, then U2 and the TL074 socket (no chip). Power it from the Pi
+  and measure about ±12 V on the socket's pins 4 and 11. Then the rest, then the chip.
 
 ## Build and install (on the Pi)
 
