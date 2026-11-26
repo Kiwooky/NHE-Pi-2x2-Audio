@@ -38,8 +38,8 @@ One TL074 between the jacks and the two audio boards, each section a unity-gain 
   line level down by 15 dB to about 0.38 V RMS, a hot-guitar level for pedals and amps;
   **LINE** passes it straight through, buffered. S3 is one DPDT toggle for both channels.
 - **Power: one supply for the whole unit, the Pi's USB-C charger.** An isolated
-  DC-DC module (U2, A0512S-1WR3: 5 V in, ±12 V out) runs from the Pi's 5 V (header
-  pin 4). A split supply puts the signal at 0 V with about ±10 V of swing, so there's
+  DC-DC module (U2, A0512S-1WR3 or IA0512S: 5 V in, ±12 V out) runs from the Pi's
+  5 V (the 5V wire on J1). A split supply puts the signal at 0 V with about ±10 V of swing, so there's
   no bias divider, and LINE mode takes the DAC's full ~6 Vp-p. The module draws about
   0.25 A from the 5 V. Its 0 V and GND pins both join the board's ground.
   R13/R14 with C6/C8 filter the module's switching noise; it's unregulated, so with
@@ -50,7 +50,7 @@ One TL074 between the jacks and the two audio boards, each section a unity-gain 
 | Part | Each | For |
 |---|---|---|
 | TL074 (DIP-14) + socket | 1 | U1 |
-| A0512S-1WR3 (5 V in, ±12 V out, 1 W, isolated, SIP) | 1 | U2 |
+| A0512S-1WR3 or XP IA0512S (5 V in, ±12 V out, 1 W, isolated, SIP) | 1 | U2 |
 | 1k / 1M | 2 / 2 | R1; R2 |
 | 100R / 100k | 4 / 4 | R6, R11; R7, R12 |
 | 10k / 2.2k / 1M | 2 / 2 / 2 | R8; R9; R10 |
@@ -67,23 +67,29 @@ Values are a starting point, not yet measured on hardware.
 
 ## Perfboard layout (everything on one board)
 
-![Perfboard layout: component side and solder side of a 9 x 15 cm pad-per-hole board](docs/perfboard.svg)
+![Perfboard layout: component side and solder side, 40 x 35 holes](docs/perfboard.svg)
 
-The buffer, the power module and both converter boards on one 9 x 15 cm
-pad-per-hole board. The converter boards plug into female header sockets, so
-they can come off. `docs/perfboard.py` draws it and checks it: no two nets share
-a hole, and every net is connected.
+The buffer, the power module and both converter boards on one 40 x 35 hole
+pad-per-hole board (about 10 x 9 cm). Buffer along the top, power in the middle,
+converter boards along the bottom on female header sockets. `docs/perfboard.py`
+draws it and checks it: no two nets share a hole, and every net is connected.
 
-- **Sockets:** J2 takes the GY-PCM5102 (SCK BCK DIN LCK GND VIN). J4's order for
-  the PCM1808 board (DATA 5V GND LRCK BCK MCK) is a guess: check it against your
-  board before soldering the J4 traces.
-- **To the Pi:** J1 (6 pins, Dupont wires): BCK → pin 12, DOUT → pin 40, LRCK → pin 35,
-  GND → pin 6, 5V → pin 2, DIN → pin 38. J6: 5 V for the power module → pin 4.
-- **Audio leads:** short 3-wire leads (L, GND, R) from the boards' audio pads or jacks
-  to the DAC and ADC pads.
-- **One wire link** on the component side joins the digital ground to the audio ground.
-- **Build order:** traces, then U2 and the TL074 socket (no chip). Power it from the Pi
-  and measure about ±12 V on the socket's pins 4 and 11. Then the rest, then the chip.
+- **ADC board (DIY More DM-AMAD01) on J4:** its six-pin header (GND VDD33 LRCK BCK
+  DATA MCK), component side up, body to the left. VDD33 stays unconnected. Power:
+  one wire from its **+** pin to the 5V pad (its ground comes through J4). Audio goes
+  in through its own 3.5 mm jack: a short stereo plug pigtail from the "to ADC" pads.
+- **DAC board (GY-PCM5102) on J2:** headers on its six-pin side only (SCK BCK DIN
+  LCK GND VIN), body to the right. Its L / G / R pins sit half a hole off the 0.1"
+  grid from that header, so they get three short wires to the DAC pads instead.
+- **To the Pi:** J1, six Dupont wires: DATA → pin 38, BCK → pin 12, LRCK → pin 35,
+  GND → pin 6, 5V → pin 2, DOUT → pin 40. That one 5 V wire feeds everything.
+- **U2:** A0512S-1WR3 or XP Power IA0512S (same pins; DigiKey NZ stocks the IA0512S).
+- **Build order:** the converter half first (J1, J2, J4 and their traces): that's
+  enough to test audio in and out with the Pi. Then U2 and the TL074 socket (no
+  chip): measure about ±12 V on socket pins 4 and 11. Then the rest, then the chip.
+
+Extra parts for the board: 6-pin female header x 2, 6-pin male header, 3.5 mm
+stereo plug with a short lead, DPDT toggle.
 
 ## Build and install (on the Pi)
 

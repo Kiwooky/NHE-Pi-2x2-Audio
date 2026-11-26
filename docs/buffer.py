@@ -168,7 +168,7 @@ Y3 = 734
 section(Y3, 'Power: ±12 V from the Pi’s 5 V', 'One supply for the whole unit: the Pi’s USB-C charger. An isolated DC-DC module makes ±12 V; its 0 V joins audio GND.')
 y = Y3 + 130
 a(f'<rect x="40" y="{y-22}" width="96" height="44" rx="6" fill="#fff" stroke="{INK}" stroke-width="2"/>')
-t(88, y - 3, 'Pi header', 12, 'middle', weight='700'); t(88, y + 13, '5 V pin 4', 11, 'middle', MUTE)
+t(88, y - 3, 'Pi header', 12, 'middle', weight='700'); t(88, y + 13, '5 V (via J1)', 11, 'middle', MUTE)
 wire((136, y), (200, y)); dot(200, y)
 cap_v(200, y, 'C10', '10µ', polar=True, L=44, side='left'); gnd(200, y + 44)
 wire((200, y), (260, y))
