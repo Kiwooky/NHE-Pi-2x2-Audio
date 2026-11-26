@@ -3,7 +3,7 @@
 import html
 o = []
 a = o.append
-W, H = 1280, 1290
+W, H = 1280, 1184
 INK, MUTE, ACC, BLUE, RED = '#212121', '#7b7b7b', '#883996', '#1e7bd6', '#c0392b'
 
 def t(x, y, s, size=13, anchor='start', color=INK, weight='400', italic=False):
@@ -103,21 +103,12 @@ y = Y + 140
 jack(70, y, 'IN')
 wire((79, y), (110, y))
 res_h(110, y, 'R1', '1k')                     # 110..174
-wire((174, y), (210, y)); dot(210, y)
-res_v(210, y, 'R2', '10M', L=70, side='left'); gnd(210, y + 70)
-wire((210, y), (240, y))
+wire((174, y), (240, y))
 cap_h(240, y, 'C1', '100n film')              # 240..284
 wire((284, y), (340, y)); dot(340, y)
-# S1, input Z: SP3T from the + input to three resistors to VB
-wire((340, y), (340, y + 40)); dot(340, y + 40)
-a(f'<line x1="340" y1="{y+40}" x2="372" y2="{y+62}" stroke="{INK}" stroke-width="2.5"/>')
-for i, (ref, val) in enumerate((('R3a', '1M'), ('R3b', '2.2M'), ('R3c', '4.7M'))):
-    xx = 380 + i * 76
-    throw(xx, y + 68)
-    wire((xx, y + 72), (xx, y + 86))
-    res_v(xx, y + 86, ref, val, L=64)
-    gnd(xx, y + 150)
-t(456, y + 50, 'S1  input Z (SP3T or rotary), to GND', 12, 'middle', ACC, '700')
+# R2 sets the input impedance (1 MΩ, like the Duo) and holds the + input at 0 V
+res_v(340, y, 'R2', '1M', L=70); gnd(340, y + 70)
+t(380, y + 100, 'input Z = 1 MΩ', 12, color=ACC, weight='700')
 # op-amp A
 wire((340, y), (700, y))
 opamp(700, y, '¼ TL074 A')                    # + (700,y), − (700,y+40), out (800,y+20)
@@ -142,7 +133,7 @@ wire((1070, yo), (1140, yo)); jack(1149, yo, 'to ADC L / R', right=True)
 t(1200, yo + 30, '(3.5 mm tip / ring)', 11, 'middle', MUTE)
 
 # ---------------- output channel ----------------
-Y2 = 586
+Y2 = 480
 section(Y2, 'Output  × 2', 'TL074 C: output L (pins 8–10)  ·  TL074 D: output R (pins 12–14)  ·  DAC board L / R → this → pedals, amp')
 y = Y2 + 176
 jack(70, y, 'from DAC L / R', below=True)
@@ -177,7 +168,7 @@ wire((1070, yo), (1140, yo)); jack(1149, yo, 'OUT L / R', right=True)
 t(1185, yo + 30, '(¼" jacks)', 11, 'middle', MUTE)
 
 # ---------------- power ----------------
-Y3 = 920
+Y3 = 814
 section(Y3, 'Power: ±12 V from the Pi’s 5 V', 'One supply for the whole unit: the Pi’s USB-C charger. An isolated DC-DC module makes ±12 V; its 0 V joins audio GND.')
 y = Y3 + 130
 a(f'<rect x="40" y="{y-22}" width="96" height="44" rx="6" fill="#fff" stroke="{INK}" stroke-width="2"/>')

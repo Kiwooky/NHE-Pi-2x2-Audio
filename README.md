@@ -31,9 +31,7 @@ Pi 3B+.
 One TL074 on veroboard, between the jacks and the two audio boards:
 
 - **Inputs (TL074 A and B):** a buffer for a guitar, in front of the ADC board's
-  3.5 mm jack. **S1** picks the input impedance: about 0.9 / 1.8 / 3.2 MΩ (R3a/b/c in
-  parallel with R2's 10 MΩ; higher keeps more of a single coil's top end, and picks
-  up more hum: keep the input wiring short and shielded). Unity gain: the ADC
+  3.5 mm jack. 1 MΩ input impedance (R2), the same as a MOD Duo. Unity gain: the ADC
   clips at 3 Vp-p, which leaves a single coil 4-10 dB of headroom. Add gain in
   software (a gain plugin) if you want it; the PCM1808's ~99 dB of range has room.
 - **Outputs (TL074 C and D):** after the DAC board's jack. **S3 INST** pads its ~2 V RMS
@@ -51,7 +49,7 @@ One TL074 on veroboard, between the jacks and the two audio boards:
 |---|---|---|
 | TL074 (DIP-14) + socket | 1 | |
 | B0512S-1W (5 V in, ±12 V out, 1 W, isolated) | 1 | U2 |
-| 1k / 10M / 1M / 2.2M / 4.7M | 2 each | R1, R2, R3a, R3b, R3c |
+| 1k / 1M | 2 / 2 | R1; R2 |
 | 10k | 2 + 2 | R4 (inputs); R8 (outputs) |
 | 2.2k / 100R / 100k | 2 / 4 / 4 | R9; R6, R11; R7, R12 |
 | 1M | 2 | R10 |
@@ -62,7 +60,7 @@ One TL074 on veroboard, between the jacks and the two audio boards:
 | 100µ electrolytic, 25 V | 2 | C6 (+12 V), C8 (−12 V, + side to GND) |
 | 10µ electrolytic, 16 V | 1 | C10, at the module's input |
 | 100n ceramic | 2 | C7 (pin 4 to GND), C11 (pin 11 to GND), at the chip |
-| SP3T (or rotary) / SPDT | 2 / 2 | S1; S3 |
+| SPDT | 2 | S3 |
 | 3.5 mm plugs (to the boards), ¼" jacks | | |
 
 Values are a starting point for the breadboard, not yet measured on hardware.
