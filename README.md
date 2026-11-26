@@ -39,7 +39,7 @@ One TL074 between the jacks and the two audio boards, each section a unity-gain 
   **LINE** passes it straight through, buffered. S3 is one DPDT toggle for both channels.
 - **Power: one supply for the whole unit, the Pi's USB-C charger.** An isolated
   DC-DC module (U2, A0512S-1WR3 or IA0512S: 5 V in, ±12 V out) runs from the Pi's
-  5 V (the 5V wire on J1). A split supply puts the signal at 0 V with about ±10 V of swing, so there's
+  5 V (GPIO pins 2 and 4). A split supply puts the signal at 0 V with about ±10 V of swing, so there's
   no bias divider, and LINE mode takes the DAC's full ~6 Vp-p. The module draws about
   0.25 A from the 5 V. Its 0 V and GND pins both join the board's ground.
   R13/R14 with C6/C8 filter the module's switching noise; it's unregulated, so with
@@ -92,7 +92,7 @@ draws it and checks it: no two nets share a hole, and every net is connected.
 - **Under the overlap** (rows 32-34) only the socket and traces; the Pi's two mounting
   holes on that edge sit under the carrier, so use low screw heads there.
 - **U2:** A0512S-1WR3 or XP Power IA0512S (same pins; DigiKey NZ stocks the IA0512S).
-- **Build order:** the converter half first (J1, J2, J4 and their traces): that's
+- **Build order:** the converter half first (the GPIO socket, J2, J4 and their traces): that's
   enough to test audio in and out with the Pi. Then U2 and the TL074 socket (no
   chip): measure about ±12 V on socket pins 4 and 11. Then the rest, then the chip.
 
