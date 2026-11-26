@@ -91,6 +91,22 @@ draws it and checks it: no two nets share a hole, and every net is connected.
 Extra parts for the board: 6-pin female header x 2, 6-pin male header, 3.5 mm
 stereo plug with a short lead, DPDT toggle.
 
+### Edit the layout yourself (VeroRoute)
+
+`docs/nhe-2x2-audio.net` is the board's netlist (every part and connection),
+written by `docs/perfboard.py`. In [VeroRoute](https://sourceforge.net/projects/veroroute/)
+(free, Mac/Windows/Linux): **File > Import > Tango** and pick the file. Every
+part arrives with its connections; drag things around and VeroRoute shows shorts
+and missing connections as you go. Switch the board to perfboard in its settings.
+
+- Resistors come in standing (legs 0.1" apart); stretch any of them to lie flat.
+- Electrolytics: pin 1 is +. C8's + goes to GND (it sits on −12 V).
+- The off-board wires arrive as pad groups: PIN (IN jacks), POUT (OUT jacks),
+  PADC (to the ADC board), PDAC (from the DAC board), PS3 (the switch), PADCP (ADC + pin).
+- U2 is a 6-pin SIP: pin 3 is the gap where the module has no pin.
+- J2 (DAC) and J4 (ADC) are 6-pin strips; the converter boards themselves aren't parts,
+  so leave room for them over J2 and J4 (DAC about 13 x 6 holes, ADC about 20 x 12).
+
 ## Build and install (on the Pi)
 
 ```sh

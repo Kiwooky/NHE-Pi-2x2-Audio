@@ -361,3 +361,55 @@ for j, n in enumerate(notes):
     t(60, ly + 40 + j * 22, '• ' + n, 12.5, 'start', '#323232')
 a('</svg>')
 open('docs/perfboard.svg', 'w').write('\n'.join(o))
+
+# ---------- netlist for VeroRoute (Protel V1 / Tango: File > Import > Tango) ----------
+def vr_type(ref, kind, pins):
+    if kind == 'r':
+        return 'RESISTOR1'                       # standing, legs 100 mil apart (stretch it in VeroRoute to lie flat)
+    if kind == 'film':
+        (x0, y0, _), (x1, y1, _) = pins
+        return 'CAP_FILM%d' % (abs(x1 - x0) + abs(y1 - y0))
+    if kind == 'cer':
+        return 'CAP_CERAMIC1'
+    if kind == 'el':
+        return 'CAP_ELECTRO_200'                 # pin 1 is +
+    if kind == 'np':
+        return 'CAP_ELECTRO_200_NP'
+    if kind == 'dip':
+        return 'DIP%d' % len(pins)
+    if kind in ('sock', 'hdr'):
+        return 'STRIP_100MIL%d' % len(pins)
+    raise ValueError(kind)
+
+NETNAME = {VP: 'P12V', VN: 'N12V', V5: 'P5V'}
+vparts, vnets = [], {}
+def vadd(name, typ, value, nets):               # nets: list of net per pin (pin 1 first)
+    vparts.append((name, typ, value))
+    for i, n in enumerate(nets):
+        if n and not n.startswith('NC_'):
+            vnets.setdefault(NETNAME.get(n, n), []).append(f'{name}-{i+1}')
+for ref, kind, val, pins in parts:
+    if kind == 'sip':                           # U2: 1 Vin, 2 GND, 3 no pin, 4 -Vo, 5 0V, 6 +Vo
+        by = {x: n for x, y, n in pins}
+        xs = sorted(by)                         # +Vo, 0V, -Vo, GND, Vin (left to right)
+        vadd(ref, 'SIP6', val, [by[xs[4]], by[xs[3]], None, by[xs[2]], by[xs[1]], by[xs[0]]])
+    else:
+        vadd(ref, vr_type(ref, kind, pins), val, [n for x, y, n in pins])
+# off-board wires as pad groups (each pin becomes a pad)
+groups = [('PIN', 'jacks IN', ['IN L tip', 'IN L sleeve', 'IN R tip', 'IN R sleeve']),
+          ('PADC', 'to ADC board', ['to ADC L in', None, 'to ADC R in', None]),
+          ('POUT', 'jacks OUT', ['OUT L tip', None, 'OUT R tip', None]),
+          ('PDAC', 'from DAC board', ['DAC L', 'DAC GND', 'DAC R']),
+          ('PS3', 'switch S3', ['S3 L com', 'S3 L line', 'S3 L inst', 'S3 R com', 'S3 R line', 'S3 R inst']),
+          ('PADCP', 'ADC + pin', ['5V to ADC + pin'])]
+bylab = {lab: (x, y, n) for x, y, n, lab, sd in pads if lab}
+gnd_left = [p for p in pads if not p[3]]        # unlabelled GND pads beside ADC and OUT pads
+for name, val, labs in groups:
+    nets = [bylab[l][2] if l else GND for l in labs]
+    vadd(name, 'PADS%d' % len(nets), val, nets)
+with open('docs/nhe-2x2-audio.net', 'w') as f:
+    for name, typ, value in vparts:
+        f.write(f'[\n{name}\n{typ}\n{value}\n\n\n\n]\n')
+    for net, pins_ in vnets.items():
+        f.write('(\n' + net + '\n' + '\n'.join(pins_) + '\n)\n')
+print(f'netlist: {len(vparts)} parts, {len(vnets)} nets -> docs/nhe-2x2-audio.net')
